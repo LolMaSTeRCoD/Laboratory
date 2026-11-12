@@ -42,3 +42,5 @@
 ## Восстановление локальных копий
 
 Скрипт: GodotRebuild/tools/setup_external_sources.ps1. По умолчанию копии располагаются в Documents/GitHub/External; можно передать -ExternalRoot. Ключ -CheckOnly только проверяет наличие, чистоту и SHA. Инициализация подмодулей выполняется лишь с -InitializeSubmodules. Существующие изменённые копии не перезаписываются. Скрипт не собирает C++ и не добавляет плагины в игру.
+
+Подробная карта просмотренных API и примеров: [EXTERNAL_SOURCE_GUIDE.md](EXTERNAL_SOURCE_GUIDE.md).
