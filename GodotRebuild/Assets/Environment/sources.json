@@ -1,0 +1,74 @@
+[
+  {
+    "id": "aerial_grass_rock",
+    "map": "Diffuse",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/aerial_grass_rock/aerial_grass_rock_diff_1k.jpg",
+    "file": "aerial_grass_rock_Diffuse.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/aerial_grass_rock"
+  },
+  {
+    "id": "aerial_grass_rock",
+    "map": "nor_gl",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/aerial_grass_rock/aerial_grass_rock_nor_gl_1k.jpg",
+    "file": "aerial_grass_rock_nor_gl.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/aerial_grass_rock"
+  },
+  {
+    "id": "aerial_grass_rock",
+    "map": "Rough",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/aerial_grass_rock/aerial_grass_rock_rough_1k.jpg",
+    "file": "aerial_grass_rock_Rough.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/aerial_grass_rock"
+  },
+  {
+    "id": "brown_mud_leaves_01",
+    "map": "Diffuse",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_diff_1k.jpg",
+    "file": "brown_mud_leaves_01_Diffuse.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/brown_mud_leaves_01"
+  },
+  {
+    "id": "brown_mud_leaves_01",
+    "map": "nor_gl",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_nor_gl_1k.jpg",
+    "file": "brown_mud_leaves_01_nor_gl.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/brown_mud_leaves_01"
+  },
+  {
+    "id": "brown_mud_leaves_01",
+    "map": "Rough",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_rough_1k.jpg",
+    "file": "brown_mud_leaves_01_Rough.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/brown_mud_leaves_01"
+  },
+  {
+    "id": "mossy_rock",
+    "map": "Diffuse",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/mossy_rock/mossy_rock_diff_1k.jpg",
+    "file": "mossy_rock_Diffuse.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/mossy_rock"
+  },
+  {
+    "id": "mossy_rock",
+    "map": "nor_gl",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/mossy_rock/mossy_rock_nor_gl_1k.jpg",
+    "file": "mossy_rock_nor_gl.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/mossy_rock"
+  },
+  {
+    "id": "mossy_rock",
+    "map": "Rough",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/mossy_rock/mossy_rock_rough_1k.jpg",
+    "file": "mossy_rock_Rough.jpg",
+    "license": "CC0 1.0",
+    "page": "https://polyhaven.com/a/mossy_rock"
+  }
+]

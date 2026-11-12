@@ -1,0 +1,15 @@
+{
+  "source": "G:\\Cady\\Reference\\BlackClover\\asta-user-turnaround.webp",
+  "frames": 64,
+  "sample_indices": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56
+  ],
+  "purpose": "Unmodified decoded animation frames supplied by the user, reference only; not runtime assets."
+}

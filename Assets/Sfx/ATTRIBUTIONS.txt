@@ -1,0 +1,20 @@
+Локальные MP3-звуки — загрузки-превью с Freesound. Указанные лицензии относятся к исходным записям.
+
+Звуки магии и башен
+- «Sword slash energy wave», greyfeather, Freesound #724716, CC0: https://freesound.org/people/greyfeather/sounds/724716/
+- «Magic Spell», qubodup, Freesound #442774, CC0: https://freesound.org/people/qubodup/sounds/442774/
+- «Fire Magic», qubodup, Freesound #442872, CC0: https://freesound.org/people/qubodup/sounds/442872/
+- «Whoosh - Weighted string - Airy whistle», Sadiquecat, Freesound #855733, CC0: https://freesound.org/people/Sadiquecat/sounds/855733/
+- «iceSpell.wav», Relenzo2, Freesound #160420, CC0: https://freesound.org/people/Relenzo2/sounds/160420/
+
+Звуки поражения врагов
+- «Goblin Death», spookymodem, Freesound #249813, CC0: https://freesound.org/people/spookymodem/sounds/249813/
+- «Orc Grunt 3», qubodup, Freesound #738439, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738439/
+- «Orc Grunt 2», qubodup, Freesound #738438, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738438/
+- «30-wolfGrowling.wav», cazadordoblekatana, Freesound #429123, CC0: https://freesound.org/people/cazadordoblekatana/sounds/429123/
+- «SRSFX_LargeBeast_LongGrunts», StephenSaldanha, Freesound #186673, CC BY 4.0: https://freesound.org/people/StephenSaldanha/sounds/186673/
+- «Moaning Wraith.wav», gateroadmusic, Freesound #400855, CC0: https://freesound.org/people/gateroadmusic/sounds/400855/
+
+Атрибуция записей CC BY 4.0:
+- qubodup — «Orc Grunt 3» и «Orc Grunt 2», Freesound, лицензия Creative Commons Attribution 4.0.
+- StephenSaldanha — «SRSFX_LargeBeast_LongGrunts», Freesound, лицензия Creative Commons Attribution 4.0.

@@ -1,0 +1,22 @@
+config_version=5
+
+[application]
+config/name="Коди TD"
+config/description="3D Tower Defense: защита рубежа Средиземья"
+config/version="0.6.0"
+config/icon="res://Assets/Icons/black-bulls-emblem.png"
+config/windows_native_icon="res://Assets/Icons/black-bulls.ico"
+run/main_scene="res://scenes/game.tscn"
+
+[display]
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/size/mode=2
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="mobile"
+textures/default_filters/use_nearest_mipmap_filter=false
+anti_aliasing/quality/msaa_3d=1
+environment/defaults/default_clear_color=Color(0.025, 0.038, 0.04, 1)

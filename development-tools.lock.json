@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12",
+  "clone_depth": 1,
+  "repositories": [
+    {
+      "name": "JoltPhysics",
+      "url": "https://github.com/jrouwe/JoltPhysics.git",
+      "commit": "5b83f3daa3ecc22ba90183b5cb739341ae46cb1f",
+      "license": "MIT"
+    },
+    {
+      "name": "Terrain3D",
+      "url": "https://github.com/TokisanGames/Terrain3D.git",
+      "commit": "185145cedadc93251934aba6f60625050ef155ce",
+      "license": "MIT"
+    },
+    {
+      "name": "material-maker",
+      "url": "https://github.com/RodZill4/material-maker.git",
+      "commit": "7d6daae3c74c09720afe4138ce09699ab3591ce1",
+      "license": "MIT"
+    },
+    {
+      "name": "Effekseer",
+      "url": "https://github.com/effekseer/Effekseer.git",
+      "commit": "b5700082b49bc5f919610880dafddc90211a9a4e",
+      "license": "MIT"
+    },
+    {
+      "name": "godot_voxel",
+      "url": "https://github.com/Zylann/godot_voxel.git",
+      "commit": "dfb0f81c7fd766f68d78715b2138f4e336cd9737",
+      "license": "MIT"
+    },
+    {
+      "name": "recastnavigation",
+      "url": "https://github.com/recastnavigation/recastnavigation.git",
+      "commit": "9f4ce64458dfae86e1239c525ddc219c4e9e06f1",
+      "license": "Zlib"
+    },
+    {
+      "name": "meshoptimizer",
+      "url": "https://github.com/zeux/meshoptimizer.git",
+      "commit": "f0a684f11ead064e176775c9b796f82a55910e92",
+      "license": "MIT"
+    },
+    {
+      "name": "FastNoise2",
+      "url": "https://github.com/Auburn/FastNoise2.git",
+      "commit": "c35d6041ce7efc05bc84e26d762f6a38d2dcc71e",
+      "license": "MIT"
+    },
+    {
+      "name": "The-Forge",
+      "url": "https://github.com/ConfettiFX/The-Forge.git",
+      "commit": "cd5046893faba2dc7869243873bf01f02a6f0df9",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "ozz-animation",
+      "url": "https://github.com/guillaumeblanc/ozz-animation.git",
+      "commit": "744eb9d99f606eda849acb0b1204f7a3dc20bca1",
+      "license": "MIT"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+# Godot regenerates these editor/import caches.
+**/.godot/
+**/.mono/
+
+# Generated builds, workshop renders, profiles and local recovery copies.
+/GodotRebuild/Builds/
+/Archive/
+/Tools/
+/DevelopmentTools/
+/KDTD.exe
+/KDTD.exe.*
+/KDTD.lnk
+/Cady.rar
+*.pck
+*.tmp
+*.new
+*.lock
+*.blend[0-9]*
+**/__pycache__/
+*.py[cod]
+
+# Workstation-specific files and credentials.
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vs/
+.vscode/
+.idea/
+.env
+.env.*
+!.env.example
+export_credentials.cfg
+.git-credentials
+*.pem
+*.pfx
+*.p12
+
+# Keep .import sidecars, .uid, MakeHuman .obj/.target/.mhw/.mhskel and LOD .res.
