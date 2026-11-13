@@ -1,5 +1,10 @@
 param([switch]$Apply)
 $ErrorActionPreference = 'Stop'
+$reviewedRoot = [IO.Path]::GetFullPath('G:\Cady').TrimEnd('\')
+$scriptRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')).TrimEnd('\')
+if (-not $scriptRoot.Equals($reviewedRoot,[StringComparison]::OrdinalIgnoreCase)) {
+    throw "Historical cleanup is disabled after relocation: its reviewed evidence belongs to $reviewedRoot. Regenerate and review cleanup evidence for $scriptRoot before enabling cleanup."
+}
 $buildsRoot = [IO.Path]::GetFullPath('G:\Cady\GodotRebuild\Builds').TrimEnd('\')
 $activeModels = 'G:\Cady\GodotRebuild\Assets\Heroes'
 $workshops = @('hero-final-20261111','hero-final-revisions-20261111','charmy-final-costume-20261111')

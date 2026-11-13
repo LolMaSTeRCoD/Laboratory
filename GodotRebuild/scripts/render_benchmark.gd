@@ -2,11 +2,12 @@ extends Node
 ## Opt-in executable benchmark: KDTD.exe -- --render-benchmark
 ## Measures real presented-frame intervals and CPU process time. No GPU timer claim.
 
-const OUTPUT := "G:/Cady/GodotRebuild/Builds/render-benchmark.json"
+const OUTPUT := "res://Builds/render-benchmark.json"
 const WARMUP_FRAMES := 180
 const SAMPLE_FRAMES := 300
 var sample_frames := SAMPLE_FRAMES
-var output_path := OUTPUT
+# Editor/source diagnostics follow the project; packaged games use writable user data.
+var output_path := ProjectSettings.globalize_path(OUTPUT if OS.has_feature("editor") else "user://Benchmarks/render-benchmark.json")
 var phase_events: Array[Dictionary] = []
 var game: Node3D
 var phase := "loading"

@@ -2,16 +2,16 @@
 .SYNOPSIS
 Explicitly runs the finished native game, visibly, and profiles its own PID.
 .EXAMPLE
- .\tools\run_graphics_profile.ps1 -Executable G:\Cady\KDTD.exe -ProfileName optimized
+ .\tools\run_graphics_profile.ps1 -ProfileName optimized
 .EXAMPLE
- .\tools\run_graphics_profile.ps1 -Executable G:\Cady\Recovery\KDTD.previous.exe -ProfileName baseline
+ .\tools\run_graphics_profile.ps1 -Executable ..\Archive\Recovery\KDTD.previous.exe -ProfileName baseline
 .NOTES
 GPU samples are Windows per-PID 3D-engine counters, not whole-adapter load or
 GPU frame timings. The script waits for the benchmark's automatic exit.
 #>
 [CmdletBinding()]
 param(
- [Alias('ExePath')][string]$Executable='G:\Cady\KDTD.exe',
+ [Alias('ExePath')][string]$Executable=([IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\KDTD.exe'))),
  [ValidatePattern('^[\p{L}\p{N}._-]+$')][string]$ProfileName='current',
  [ValidateSet('both','capped60','uncapped')][string]$Mode='both',
  [string]$OutputDirectory=(Join-Path $PSScriptRoot '..\Builds\GraphicsProfiles'),

@@ -5,6 +5,10 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $rootPath = 'G:\Cady'
+$scriptRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')).TrimEnd('\')
+if (-not $scriptRoot.Equals([IO.Path]::GetFullPath($rootPath).TrimEnd('\'),[StringComparison]::OrdinalIgnoreCase)) {
+    throw "Historical cleanup is disabled after relocation: its reviewed manifests belong to $rootPath. Regenerate and review cleanup plans for $scriptRoot before enabling cleanup."
+}
 $projectPath = Join-Path $rootPath 'GodotRebuild'
 $rootPrefix = [IO.Path]::GetFullPath($rootPath).TrimEnd('\') + '\'
 $plan = Get-Content -LiteralPath $PlanPath -Raw | ConvertFrom-Json

@@ -1,7 +1,8 @@
 # Коди TD — выпуск 0.6.0
 
-Проверено 2026-11-12. Основной запуск: [KDTD.exe](G:/Cady/KDTD.exe).
-Для отправки: [KDTD-Windows.zip](G:/Cady/GodotRebuild/Builds/Release/KDTD-Windows.zip).
+Проверено 2026-11-12. Текущая рабочая папка на этом компьютере: `E:\Laboratory`.
+Основной запуск: [KDTD.exe](../KDTD.exe).
+Для отправки: [KDTD-Windows.zip](Builds/Release/KDTD-Windows.zip).
 Архив содержит только EXE и инструкцию; редактор, Blender, исходники и интернет для запуска не требуются.
 
 ## Что входит в сборку
