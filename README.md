@@ -9,9 +9,10 @@
 
 ## Получить проект
 
-Нужны Git и [Git LFS](https://git-lfs.com/). Репозиторий приватный; сначала
-авторизуйтесь в GitHub CLI (`gh auth login` и `gh auth setup-git`) либо используйте
-GitHub Desktop с доступом к этому репозиторию.
+Нужны Git и [Git LFS](https://git-lfs.com/). Репозиторий публичный:
+[LolMaSTeRCoD/Laboratory](https://github.com/LolMaSTeRCoD/Laboratory).
+Для скачивания проекта вход в GitHub не требуется. Для отправки изменений
+нужны права на запись и авторизация в GitHub CLI либо GitHub Desktop.
 
 ```powershell
 git lfs install
