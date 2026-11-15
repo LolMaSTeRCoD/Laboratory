@@ -8,7 +8,7 @@ import numpy as np
 
 
 PROFILES = {
-    'asta': dict(lower=.93, shift=-.10, chin=1.04, neck=.96),
+    'asta': dict(lower=1.01, shift=-.10, chin=.98, neck=.96),
     'yuno': dict(lower=.90, shift=-.09, chin=1.04, neck=.98),
     'magna': dict(lower=.94, shift=-.07, chin=1.05, neck=1.00),
     'vanessa': dict(lower=.88, shift=-.13, chin=1.08, neck=.96),
@@ -37,6 +37,15 @@ def sculpt_portrait(points, raw, groups, weights, hero):
     points[:, 1] += attach*(below*(profile['lower']-1)+profile['shift'])
     jaw = np.exp(-((raw[:, 1]-6.15)/.38)**2)*attach
     points[:, 0] *= 1+(profile['chin']-1)*jaw
+    if hero == 'asta':
+        # Widen the actual lip region with its jaw helpers, rather than drawing
+        # a larger crease over an unchanged small mouth. The smooth lateral
+        # deformation preserves the connected cheek surface and depth relief.
+        lip = np.asarray([min(1.0, sum(value for name, value in row.items()
+                                     if name.startswith('oris'))) for row in weights])
+        mouth_height = float(np.median(original[lip > .65, 1]))
+        mouth = np.exp(-((raw[:, 0]/.58)**4)-((original[:, 1]-mouth_height)/.30)**4)
+        points[:, 0] *= 1+.16*mouth*attach
     if hero == 'charmy':
         # The former cheek multiplier flattened the child's head into a wide
         # disk. Restore a compact, vertically round skull and a short neck.

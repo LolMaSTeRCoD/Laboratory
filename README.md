@@ -1,10 +1,12 @@
 # Коди TD — Made by Alex
 
 Трёхмерная Tower Defense на Godot. Основной игровой проект находится в
-`GodotRebuild/project.godot`; последняя подготовленная Windows-сборка — **0.6.1**.
+`GodotRebuild/project.godot`; текущая Windows-сборка — **0.6.2**.
 
-**[Скачать готовую игру для Windows](https://github.com/LolMaSTeRCoD/Laboratory/releases/latest)**.
+**[Скачать игру для Windows — ZIP](https://github.com/LolMaSTeRCoD/Laboratory/releases/latest/download/KDTD-Windows.zip)**.
 Распакуйте архив и запустите `KDTD.exe`; редактор и инструменты разработки не нужны.
+Можно также **[скачать самостоятельный KDTD.exe](https://github.com/LolMaSTeRCoD/Laboratory/releases/latest/download/KDTD.exe)**
+или открыть [страницу текущего релиза](https://github.com/LolMaSTeRCoD/Laboratory/releases/latest).
 
 На текущем компьютере основная рабочая папка — **`E:\Laboratory`**.
 Запуск: `E:\Laboratory\KDTD.exe`. Исходная папка `G:\Cady` сохранена для
@@ -82,6 +84,8 @@ pwsh -File .\GodotRebuild\build_KDTD.ps1
 [KDTD_STATUS.md](GodotRebuild/KDTD_STATUS.md),
 [COMBAT_UPDATE.md](GodotRebuild/COMBAT_UPDATE.md),
 [CHARACTER_PIPELINE.md](GodotRebuild/CHARACTER_PIPELINE.md),
+[изменения Асты 0.6.2](GodotRebuild/CHARACTER_LIKENESS_062.md),
+[проверки сборки 0.6.2](docs/qa/0.6.2.json),
 [изменения моделей 0.6.1](GodotRebuild/CHARACTER_LIKENESS_061.md),
 [проверки сборки 0.6.1](docs/qa/0.6.1.json).
 Наличие скелета и прохождение технических проверок само по себе не подтверждает

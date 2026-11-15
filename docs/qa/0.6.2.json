@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "release": "0.6.2",
+  "verified_date": "2026-11-15",
+  "scope": "Windows 0.6.2: Asta face-only refinement and fresh build/render validation; unchanged combat campaign evidence explicitly carried forward.",
+  "artifacts": {
+    "executable": {
+      "name": "KDTD.exe",
+      "file_version": "0.6.2.0",
+      "bytes": 408306848,
+      "sha256": "10AB5791666DCF6E8C1B334134578FCCDEAAC8FAC97F93133F6AE4F810B39777"
+    },
+    "archive": {
+      "path": "GodotRebuild/Builds/Release/KDTD-Windows.zip",
+      "bytes": 331223835,
+      "sha256": "CD67363CD2BB68F6332C1FEDC9CD37F6302F398430D329F1060B14627DE79F0D",
+      "contents": [
+        "KDTD.exe",
+        "README.txt"
+      ],
+      "embedded_executable_hash_verified": true
+    }
+  },
+  "build": {
+    "status": "passed",
+    "command": "pwsh -File ./GodotRebuild/build_KDTD.ps1 -ReuseModels",
+    "engine": "Godot 4.7.2",
+    "model_tool": "Blender 5.2.3",
+    "script_errors": 0,
+    "engine_errors": 0,
+    "objectdb_leak_warnings": 0,
+    "canonical_executable_published_after_staging_checks": true,
+    "standalone_executable_startup": "passed",
+    "embedded_package_isolation": "passed"
+  },
+  "model_validation": {
+    "status": "passed",
+    "hero_glbs": 30,
+    "heroes": 6,
+    "ranks_per_hero": 5,
+    "bones_per_hero": 166,
+    "hero_clips": [
+      "Idle",
+      "Attack",
+      "Ability"
+    ],
+    "distinct_geometry_per_rank": true,
+    "embedded_glb_material_images": true,
+    "finite_geometry_indices_uv_and_normalized_weights": true,
+    "self_contained_editable_blend_files": 6,
+    "total_runtime_glbs": 37,
+    "compact_lod_meshes": 37,
+    "imported_atlas_pixel_guard": {
+      "status": "passed",
+      "models": 30
+    },
+    "lod_source_hash_uv_skin_weights_animation_contracts": "passed",
+    "source_provenance": {
+      "changed_hero": "asta",
+      "regenerated_or_reused_approved_ranks": 5,
+      "other_hero_glbs_byte_unchanged": 25,
+      "other_hero_editables_byte_unchanged": 5,
+      "source_patch": "GodotRebuild/Builds/asta-likeness-20261115/accepted/source.patch",
+      "promotion_report": "GodotRebuild/Builds/asta-likeness-20261115/promotion.json",
+      "baseline_hair_preserved": true,
+      "rejected_hair_prototype_promoted": false
+    }
+  },
+  "gameplay_validation": {
+    "status": "passed",
+    "method": "Automated project regressions and isolated executable-resource interaction tests; native windowed executable rendering separately measured. Not a complete manual GUI playthrough.",
+    "controls": [
+      "startup/menu",
+      "six tower cards and mouse placement callbacks",
+      "legal grass and forbidden road placement",
+      "close spacing, cancellation, selection and statistics",
+      "upgrades and full-price sale",
+      "Vanessa aura modes and effective stats",
+      "wave spawning, targeting, damage, armor, rewards and death cleanup",
+      "camera orbit, cursor zoom, map fit, mouse release and Home reset",
+      "independent music/SFX and persisted settings",
+      "resilient looping music playlist",
+      "panel layout and NPC inspection"
+    ],
+    "maps": 18,
+    "biomes": 6,
+    "unobstructed_build_samples": 4105,
+    "inspection_layout_cases": 42,
+    "full_panel_layouts": 3,
+    "combat_rule_checks": 7671,
+    "complete_first_wave_diagnostics": 12,
+    "animated_spell_origin_checks": 180,
+    "packed_spell_origin_checks": 180,
+    "packed_charmy_interaction_checks": 24,
+    "packed_runtime_models_loaded": 37,
+    "packed_lods_loaded": 37,
+    "complete_270_wave_simulation_rerun": false,
+    "manual_complete_campaign_playthrough": false,
+    "complete_campaign_evidence": {
+      "carried_forward_from": "0.6.1",
+      "newly_run": false,
+      "source_hashes_verified_unchanged": true,
+      "report": "docs/qa/0.6.2-gameplay-reuse.json",
+      "waves": 270,
+      "arenas": 18,
+      "transitions": 17,
+      "final_bosses_killed": 18,
+      "campaign_won": true
+    }
+  },
+  "native_gpu_validation": {
+    "status": "passed",
+    "target": "Final standalone KDTD.exe 0.6.2.0",
+    "gpu": {
+      "api": "1.4.315",
+      "name": "AMD Radeon RX 6700 XT",
+      "vendor": "AMD"
+    },
+    "renderer": "forward_plus",
+    "profile_mode": "capped60",
+    "engine_max_fps": 60,
+    "vsync_mode": 1,
+    "initial_warmup_frames": 180,
+    "sample_frames_per_scenario": 300,
+    "render_image_size": {
+      "height": 1377,
+      "width": 2448
+    },
+    "native_window_client_size": {
+      "height": 1377,
+      "width": 2560
+    },
+    "logical_ui_size": {
+      "height": 900,
+      "width": 1600
+    },
+    "render_scale_3d": 1.0,
+    "scenarios": [
+      {
+        "id": "far",
+        "scenario": "forest_far",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 59.9671,
+        "frame_ms": {
+          "max": 24.573,
+          "mean": 16.6758,
+          "p50": 16.571,
+          "p95": 19.927
+        },
+        "render_gpu_ms": {
+          "max": 24.184,
+          "mean": 10.6615,
+          "p50": 10.464,
+          "p95": 13.107
+        },
+        "video_memory_mib": {
+          "max": 1850.1054,
+          "mean": 1806.6845,
+          "p50": 1791.7829,
+          "p95": 1848.546
+        },
+        "character_lod": {
+          "active_mesh_vertices": 6093422,
+          "compact": 9,
+          "high": 109,
+          "missing": 0,
+          "source_vertices": 6420506
+        },
+        "camera": {
+          "orthographic_size": 23.1487575566178,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "near",
+        "scenario": "forest_near",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 59.9636,
+        "frame_ms": {
+          "max": 26.057,
+          "mean": 16.6768,
+          "p50": 16.43,
+          "p95": 20.973
+        },
+        "render_gpu_ms": {
+          "max": 20.378,
+          "mean": 10.9443,
+          "p50": 10.689,
+          "p95": 14.309
+        },
+        "video_memory_mib": {
+          "max": 1857.0253,
+          "mean": 1857.0253,
+          "p50": 1857.0253,
+          "p95": 1857.0253
+        },
+        "character_lod": {
+          "active_mesh_vertices": 6420506,
+          "compact": 0,
+          "high": 118,
+          "missing": 0,
+          "source_vertices": 6420506
+        },
+        "camera": {
+          "orthographic_size": 14.0,
+          "pitch_degrees": 45.0,
+          "yaw_degrees": 25.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "jungle",
+        "scenario": "jungle_far",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 59.614,
+        "frame_ms": {
+          "max": 25.767,
+          "mean": 16.7746,
+          "p50": 16.653,
+          "p95": 20.223
+        },
+        "render_gpu_ms": {
+          "max": 18.354,
+          "mean": 10.5774,
+          "p50": 10.391,
+          "p95": 12.908
+        },
+        "video_memory_mib": {
+          "max": 1837.4896,
+          "mean": 1827.844,
+          "p50": 1835.7938,
+          "p95": 1835.7938
+        },
+        "character_lod": {
+          "active_mesh_vertices": 5303198,
+          "compact": 32,
+          "high": 86,
+          "missing": 0,
+          "source_vertices": 6420506
+        },
+        "camera": {
+          "orthographic_size": 27.9494942089846,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "winter",
+        "scenario": "winter_stress_actual_close_view",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 58.5364,
+        "frame_ms": {
+          "max": 23.209,
+          "mean": 17.0834,
+          "p50": 16.598,
+          "p95": 20.884
+        },
+        "render_gpu_ms": {
+          "max": 15.835,
+          "mean": 10.8921,
+          "p50": 10.798,
+          "p95": 13.609
+        },
+        "video_memory_mib": {
+          "max": 1858.0733,
+          "mean": 1836.7327,
+          "p50": 1854.1426,
+          "p95": 1856.0078
+        },
+        "character_lod": {
+          "active_mesh_vertices": 2999972,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6420506
+        },
+        "camera": {
+          "orthographic_size": 55.9674379254441,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      }
+    ],
+    "measurement": "Monotonic process-frame wall intervals; RenderingServer viewport GPU timestamps. Screenshot readback, unloaded biome gallery and hero showcase excluded from frame samples.",
+    "winter_caveat": "Actual orthographic size 55.967; 16 high-detail and 102 compact characters. Not the same far view as forest/jungle.",
+    "limitations": [
+      "Capped 60 FPS with VSync, not uncapped throughput.",
+      "GPU timings are not GPU utilization percentages.",
+      "One RX 6700 XT, four short scenarios, not every campaign state or other hardware."
+    ],
+    "native_engine_log_clean": true,
+    "finished_phase_observed": true,
+    "process_auto_exited": true,
+    "visible_native_window_requested": true,
+    "gpu_timestamp_variation_guard": "passed in all four scenes",
+    "excluded_profile": {
+      "path": "GodotRebuild/Builds/quality-release-062-final-qa/render.json",
+      "reason": "Initial background-window run had stale GPU timestamps in forest far/near and is excluded from reported performance."
+    }
+  },
+  "artistic_quality": {
+    "exact_canonical_likeness_achieved": false,
+    "method": "Independent full-volume anatomical reconstruction using MakeHuman CC0 topology, individual sculpt, hair, costumes and rigged geometry; reference images are not billboard substitutes.",
+    "reviewed": "Fresh actual GLB views for Asta L1/L3/L5 and L1/L5 Attack; 15 views. Other heroes carry forward 0.6.1 geometry and reviews.",
+    "remaining": [
+      "Exact canonical likeness is unfinished: hair silhouette, nose/cheeks/mouth and headband/material detail differ from the supplied reference.",
+      "Small existing scalp/temple skin patches and cape shoulder intersections remain visible at maximum zoom.",
+      "Landscape and attacking NPC artwork unchanged in this iteration."
+    ],
+    "landscape_art_reworked_in_this_release": false,
+    "attacking_npc_art_reworked_in_this_release": false
+  },
+  "evidence": {
+    "availability": "Large reports and actual renders remain local under ignored GodotRebuild/Builds; this is the portable 0.6.2 summary.",
+    "paths": [
+      "GodotRebuild/Builds/release-062-build.log",
+      "GodotRebuild/Builds/quality-release-062-visible-qa/render.json",
+      "GodotRebuild/Builds/quality-release-062-visible-qa/engine.log",
+      "GodotRebuild/Builds/asta-likeness-20261115/accepted/native-audit.json",
+      "GodotRebuild/Builds/asta-likeness-20261115/accepted/packed-editable-audit.json",
+      "GodotRebuild/Builds/asta-likeness-20261115/promotion.json",
+      "GodotRebuild/Builds/check-hero-glb-contracts.json",
+      "GodotRebuild/Builds/check-hero-import-textures.log",
+      "docs/qa/0.6.2-gameplay-reuse.json",
+      "GodotRebuild/Builds/Release/KDTD-Windows.zip.json",
+      "GodotRebuild/Builds/release-062-package-review.json",
+      "GodotRebuild/Builds/cleanup-062-local-caches.json",
+      "GodotRebuild/Builds/check-062-after-cache-cleanup.log"
+    ]
+  },
+  "based_on": "0.6.1",
+  "workspace_cleanup": {
+    "bytes_removed": 206438082,
+    "files_removed": 208,
+    "canonical_models_and_packed_source_verified": true,
+    "post_cleanup_native_startup": "passed",
+    "renders_reports_and_useful_import_cache_preserved": true,
+    "report": "GodotRebuild/Builds/cleanup-062-local-caches.json"
+  }
+}

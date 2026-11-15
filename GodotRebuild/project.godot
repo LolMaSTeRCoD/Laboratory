@@ -3,7 +3,7 @@ config_version=5
 [application]
 config/name="Коди TD"
 config/description="3D Tower Defense: защита рубежа Средиземья"
-config/version="0.6.1"
+config/version="0.6.2"
 config/icon="res://Assets/Icons/black-bulls-emblem.png"
 config/windows_native_icon="res://Assets/Icons/black-bulls.ico"
 run/main_scene="res://scenes/game.tscn"

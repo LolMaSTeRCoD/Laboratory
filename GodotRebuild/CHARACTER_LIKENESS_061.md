@@ -107,5 +107,6 @@ checkpoint/before-character-likeness-20261113.
 
 Локальные доказательства: `Builds/release-061-build.log`,
 `Builds/quality-release-061-final-qa/render.json`, соседний `engine.log`,
-`Builds/Release/KDTD-Windows.zip.json`. Большие диагностические файлы не
+`Builds/acceptance-061/package-061.json` — сохранённая метаинформация пакета
+0.6.1, который заменяется последующими сборками. Большие диагностические файлы не
 включены в Git; переносимая сводка сохранена в `docs/qa/0.6.1.json` от корня репозитория.

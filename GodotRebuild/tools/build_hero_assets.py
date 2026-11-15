@@ -22,7 +22,7 @@ EDITABLE = Path(os.environ.get('CADY_HERO_EDITABLE',str(ROOT.parent / 'Source' /
 TAU = math.tau
 
 HEROES = {
- 'asta': dict(height=2.12, width=1.11, head=1.50, jaw=.98, female=False,
+ 'asta': dict(height=2.12, width=1.11, head=1.46, jaw=.98, female=False,
   skin=(.80,.58,.43), hair=(.30,.31,.25), cloth=(.07,.14,.21), main=(.018,.023,.030),
   pants=(.025,.047,.075), leather=(.25,.13,.055), iris=(.28,.50,.10), accent=(.30,.018,.026)),
  'yuno': dict(height=2.30, width=.93, head=1.24, jaw=.97, female=False,
@@ -78,7 +78,7 @@ NORMAL_CACHE={}
 # do not add a face photograph or alter the deformation weights/skeleton.
 ANIME_HEAD_PROFILES = {
  'asta': dict(anime=.90,asian=.55,eye=1.15,nose_depth=1.05,nose_width=.75,
-              eye_x=1.15,eye_z=1.40,eye_tilt=.12,jaw=1.08,cheek=1.02,crown=.90,lip_height=.70,nose_tip=.045),
+              eye_x=1.15,eye_z=1.20,eye_tilt=.23,jaw=.99,cheek=.96,crown=.90,lip_height=.80,nose_tip=.045),
  'yuno': dict(anime=.76,asian=.46,eye=.92,nose_depth=.85,nose_width=.65,
               eye_x=1.12,eye_z=1.06,eye_tilt=.10,jaw=.97,cheek=.99,crown=.92,lip_height=.66,nose_tip=.025),
  'magna': dict(anime=.68,asian=.43,eye=.95,nose_depth=.75,nose_width=.55,
@@ -821,9 +821,9 @@ def face_hair(m,body,hero,level):
   brow=[];brow_width=eye_width*(1.03 if hero in ['asta','yuno'] else .95)
   for t in np.linspace(0,1,23):
    q=(t-.5)*2;x=center.x+q*brow_width
-   offset={"asta":.017,"yuno":.015,"magna":.015,"vanessa":.018,"noelle":.020,"charmy":.023}[hero]
+   offset={"asta":.011,"yuno":.015,"magna":.015,"vanessa":.018,"noelle":.020,"charmy":.023}[hero]
    z=center.z+eye_height+offset
-   if hero=='asta':z+=sign*q*.007
+   if hero=='asta':z+=sign*q*.012
    elif hero=='yuno':z+=sign*q*.0035
    elif hero=='vanessa':z+=.007*math.sin(math.pi*t)+sign*q*.003
    elif hero=='charmy':z+=.006*math.sin(math.pi*t)
@@ -831,7 +831,7 @@ def face_hair(m,body,hero,level):
    hit,_,_,_=face_surface.ray_cast(Vector((x,-3,z)),Vector((0,1,0)),6)
    y=hit.y-.0026 if hit is not None else center.y-.001
    brow.append((x,y,z))
-  thick=.0026 if hero=='asta' else .0022 if hero in ['yuno','magna'] else .0015
+  thick=.0031 if hero=='asta' else .0022 if hero in ['yuno','magna'] else .0015
   m.tube(brow,[max(.00035,thick*math.sin(math.pi*(.10+.80*t))) for t in np.linspace(0,1,23)],'black','head',8)
  # Expressions, hair masses and accessories use this same deformed head.
  from hero_facial_expression import add_mouth_expression

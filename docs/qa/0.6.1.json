@@ -348,7 +348,7 @@
     "attacking_npc_art_reworked_in_this_release": false
   },
   "evidence": {
-    "availability": "Large source reports remain local under ignored GodotRebuild/Builds; this file is the portable summary.",
+    "availability": "Historical 0.6.1 summary with fixed hashes. Unversioned build output paths can be replaced by later releases. Original package metadata is preserved locally at GodotRebuild/Builds/acceptance-061/package-061.json; large reports remain under ignored Builds.",
     "paths": [
       "GodotRebuild/Builds/release-061-build.log",
       "GodotRebuild/Builds/acceptance-061/report.json",
@@ -359,7 +359,7 @@
       "GodotRebuild/Builds/likeness-20261113/final3/native-audit.json",
       "GodotRebuild/Builds/likeness-20261113/final3/editable-audit.json",
       "GodotRebuild/Builds/likeness-20261113/final3/revision-audit.json",
-      "GodotRebuild/Builds/Release/KDTD-Windows.zip.json"
+      "GodotRebuild/Builds/acceptance-061/package-061.json"
     ]
   }
 }

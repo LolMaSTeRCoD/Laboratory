@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "target_release": "0.6.2",
+  "verified_utc": "2026-11-15T09:48:36.2521911Z",
+  "status": "accepted_gameplay_logic_evidence_reused",
+  "verification_kind": "Read-only SHA256 comparison with accepted 0.6.1 campaign evidence; no game or test process launched.",
+  "carried_forward_from": "0.6.1",
+  "newly_run": false,
+  "all_checked_inputs_same_unmodified": true,
+  "source_comparison": {
+    "GodotRebuild/scripts/game.gd": {
+      "accepted_0_6_1_sha256": "2b6565fe1b5ef3dc1b8d6f130e57baee9eede2b94f398c54192e3d0a517a94b9",
+      "current_0_6_2_sha256": "2b6565fe1b5ef3dc1b8d6f130e57baee9eede2b94f398c54192e3d0a517a94b9",
+      "same_unmodified": true
+    },
+    "GodotRebuild/scripts/combat_balance.gd": {
+      "accepted_0_6_1_sha256": "203eb95d19bc453127a8b984fd6fc0b20d62308097a669c476c9ca123ff7d768",
+      "current_0_6_2_sha256": "203eb95d19bc453127a8b984fd6fc0b20d62308097a669c476c9ca123ff7d768",
+      "same_unmodified": true
+    },
+    "GodotRebuild/Assets/Maps/routes.json": {
+      "accepted_0_6_1_sha256": "c3ef071f6914c2893a86372fbda91a097500483ad169183a05fb7dff30d3d612",
+      "current_0_6_2_sha256": "c3ef071f6914c2893a86372fbda91a097500483ad169183a05fb7dff30d3d612",
+      "same_unmodified": true
+    },
+    "GodotRebuild/tests/campaign_balance_probe.gd": {
+      "accepted_0_6_1_sha256": "118d3ee612f2088b5e450f4d9fd457b9aa9d00008b793bc281ac828a3c62d751",
+      "current_0_6_2_sha256": "118d3ee612f2088b5e450f4d9fd457b9aa9d00008b793bc281ac828a3c62d751",
+      "same_unmodified": true
+    }
+  },
+  "inherited_campaign": {
+    "source_release": "0.6.1",
+    "newly_run_for_0_6_2": false,
+    "started_utc": "2026-11-15T09:30:33",
+    "finished_utc": "2026-11-15T09:33:33.471292Z",
+    "elapsed_seconds": 181.6,
+    "runner": "GodotRebuild/tests/campaign_balance_probe.gd",
+    "arguments": [
+      "--connected-dual-aura"
+    ],
+    "method": "Production game.gd combat, economy and campaign-state logic at 30 Hz with actual routes and scenery obstacles, legal placements, paid upgrades, finite gold and real transitions. Imported character models, sound, HUD redraws and spell artwork omitted by the existing harness.",
+    "campaign_won": true,
+    "arenas": 18,
+    "waves": 270,
+    "transitions": 17,
+    "final_bosses_spawned": 18,
+    "final_bosses_killed": 18,
+    "spawned": 5940,
+    "killed": 5935,
+    "escaped": 5,
+    "economy": {
+      "actual_final_gold": 1094,
+      "discarded_on_transitions": 17967,
+      "earned_gold": 138141,
+      "expected_final_gold": 1094,
+      "sales_used": false,
+      "spent_gold": 123040,
+      "supplied_base_gold": 3960
+    },
+    "source_hashes_match": true,
+    "original_run_engine_or_assertion_errors": 0
+  },
+  "evidence": {
+    "portable_0_6_1_summary": "docs/qa/0.6.1.json",
+    "local_summary": "GodotRebuild/Builds/acceptance-061/report.json",
+    "local_summary_sha256": "be9df38f909fcc471bdbc2a655182f6c20620b08d3b9ad8412ff864e5172df67",
+    "local_full_campaign": "GodotRebuild/Builds/acceptance-061/campaign-connected-dual-aura.json",
+    "local_full_campaign_sha256": "ea4a4836885881ddcbfe538d0efbac9ffb50ccdb69b939ce9fd0dabf2009a8e6",
+    "local_full_campaign_console_log": "GodotRebuild/Builds/acceptance-061/campaign-console.log",
+    "large_local_evidence_is_git_ignored": true
+  },
+  "claims": {
+    "newly_run_0_6_2_full_campaign": false,
+    "manual_gui_campaign_playthrough": false,
+    "graphical_or_artistic_quality": false,
+    "new_asta_model_visual_quality": false,
+    "standalone_0_6_2_export_execution": false
+  },
+  "limitations": [
+    "Only the listed gameplay sources and runner are certified unchanged by this comparison.",
+    "Inherited headless evidence does not assess the changed Asta face/model, imported models, rendering, GUI playthrough, or artistic likeness.",
+    "Fresh 0.6.2 build, export-package, model, spell-origin and render validation is separate evidence."
+  ]
+}

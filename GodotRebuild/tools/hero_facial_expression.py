@@ -21,7 +21,7 @@ def _mouth_frame(body, hero, groups, faces, raw, vert_weights):
     source_line = (upper_edge + lower_edge) * .5
     corner_ids = [i for i in ids if abs(raw[i, 1] - source_line) < .13]
     base_half = float(np.quantile(np.abs(body[corner_ids, 0] - center[0]), .90))
-    factor = {'asta': .64, 'yuno': .52, 'magna': 1.05, 'vanessa': .60, 'noelle': .46, 'charmy': .60}[hero]
+    factor = {'asta': .78, 'yuno': .52, 'magna': 1.05, 'vanessa': .60, 'noelle': .46, 'charmy': .60}[hero]
     half = base_half * factor
     if half <= 0:
         raise RuntimeError('Invalid anatomical mouth width for ' + hero)
@@ -106,8 +106,8 @@ def add_mouth_expression(m, body, hero, groups, faces, raw, vert_weights):
     center, half, project = _mouth_frame(body, hero, groups, faces, raw, vert_weights)
     if hero == 'magna':
         return _magna_grin(m, center, half, project)
-    smile = {'asta': .045, 'yuno': .0, 'magna': .12, 'vanessa': .055, 'noelle': .012, 'charmy': .105}[hero]
-    asymmetry = {'asta': .012, 'vanessa': .035}.get(hero, 0)
+    smile = {'asta': .080, 'yuno': .0, 'magna': .12, 'vanessa': .055, 'noelle': .012, 'charmy': .105}[hero]
+    asymmetry = {'asta': .020, 'vanessa': .035}.get(hero, 0)
     points = []
     radii = []
     for t in np.linspace(0, 1, 33):
