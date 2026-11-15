@@ -91,7 +91,31 @@
     "packed_charmy_interaction_checks": 24,
     "packed_runtime_models_loaded": 37,
     "packed_lods_loaded": 37,
-    "complete_270_wave_simulation_rerun": false,
+    "complete_270_wave_simulation_rerun": true,
+    "connected_campaign": {
+      "verified_date": "2026-11-15",
+      "strategy": "connected-dual-aura",
+      "method": "Production combat/economy/state logic at 30 Hz with real routes, legal placements and finite gold; models, sound and HUD drawing omitted.",
+      "campaign_won": true,
+      "arenas": 18,
+      "waves": 270,
+      "transitions": 17,
+      "final_bosses_killed": 18,
+      "spawned": 5940,
+      "killed": 5935,
+      "escaped": 5,
+      "elapsed_seconds": 181.6,
+      "source_hashes_verified": true,
+      "engine_errors": 0,
+      "economy": {
+        "supplied_base_gold": 3960,
+        "earned_gold": 138141,
+        "spent_gold": 123040,
+        "discarded_on_transitions": 17967,
+        "final_gold": 1094,
+        "balanced": true
+      }
+    },
     "manual_complete_campaign_playthrough": false
   },
   "native_gpu_validation": {
@@ -327,6 +351,8 @@
     "availability": "Large source reports remain local under ignored GodotRebuild/Builds; this file is the portable summary.",
     "paths": [
       "GodotRebuild/Builds/release-061-build.log",
+      "GodotRebuild/Builds/acceptance-061/report.json",
+      "GodotRebuild/Builds/acceptance-061/campaign-connected-dual-aura.json",
       "GodotRebuild/Builds/quality-release-061-final-qa/render.json",
       "GodotRebuild/Builds/quality-release-061-final-qa/engine.log",
       "GodotRebuild/Builds/check-hero-import-textures.log",
