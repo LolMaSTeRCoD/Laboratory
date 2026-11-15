@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-15",
+  "scope": "active Laboratory development checkout",
+  "removed": {
+    "bytes": 5828825374,
+    "files": 6820,
+    "targets": 296
+  },
+  "checkout_size": {
+    "before_bytes": 12641607453,
+    "after_bytes": 6813217457
+  },
+  "verification": {
+    "passed": true,
+    "canonical_files_unchanged": 48,
+    "exe_unchanged": true,
+    "zip_unchanged": true,
+    "version": "0.6.1.0",
+    "editable_blender_files_self_contained": 14,
+    "native_startup_passed": true
+  },
+  "checkpoint": {
+    "branch": "checkpoint/before-cleanup-20261115",
+    "commit": "972e4a810293c27b5887570616cf30d028fa5991"
+  },
+  "preserved": [
+    "current game and release ZIP",
+    "canonical models, textures and editable sources",
+    "Git and LFS history",
+    "recovery build",
+    "installed development tools",
+    "QA renders, logs and reports",
+    "useful Godot import cache",
+    "owner-retained G:/Cady copy"
+  ],
+  "regeneration_note": "Historical workshop model/texture paths require regeneration if those old experiments are needed again."
+}

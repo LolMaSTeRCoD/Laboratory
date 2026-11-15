@@ -27,3 +27,5 @@
   priority when additional work is necessary.
 - Check gameplay interactions when changing placement, combat, UI, camera or
   assets. Relevant headless tests are in `GodotRebuild/tests/`.
+- Start resumed work with `GodotRebuild/CONTINUATION.md`; consult detailed QA
+  and historical workshop logs only when the current task needs them.
