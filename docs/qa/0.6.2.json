@@ -343,7 +343,7 @@
     "attacking_npc_art_reworked_in_this_release": false
   },
   "evidence": {
-    "availability": "Large reports and actual renders remain local under ignored GodotRebuild/Builds; this is the portable 0.6.2 summary.",
+    "availability": "Historical 0.6.2 summary with fixed hashes; unversioned build outputs now follow later releases. Preserved package metadata: GodotRebuild/Builds/quality-release-062-visible-qa/package-062.json.",
     "paths": [
       "GodotRebuild/Builds/release-062-build.log",
       "GodotRebuild/Builds/quality-release-062-visible-qa/render.json",
@@ -354,7 +354,7 @@
       "GodotRebuild/Builds/check-hero-glb-contracts.json",
       "GodotRebuild/Builds/check-hero-import-textures.log",
       "docs/qa/0.6.2-gameplay-reuse.json",
-      "GodotRebuild/Builds/Release/KDTD-Windows.zip.json",
+      "GodotRebuild/Builds/quality-release-062-visible-qa/package-062.json",
       "GodotRebuild/Builds/release-062-package-review.json",
       "GodotRebuild/Builds/cleanup-062-local-caches.json",
       "GodotRebuild/Builds/check-062-after-cache-cleanup.log"

@@ -308,7 +308,7 @@ def add_mantle(m, body, hero, stage, groups):
     for index,face in enumerate(m.f):
         hidden=False
         sleeve=(((hero=='noelle' and m.m[index]=='white') or
-                 (hero=='charmy' and m.m[index]=='cloth')) and
+                 (hero in ['asta','charmy'] and m.m[index]=='cloth')) and
                 sum(sum(v for n,v in m.w[i].items() if 'upper_arm' in n or 'shoulder' in n)
                     for i in face)/len(face)>.2)
         if index<first_cloak_face and (m.m[index]=='skin' or sleeve):

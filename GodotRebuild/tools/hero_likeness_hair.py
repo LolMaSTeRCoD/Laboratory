@@ -47,7 +47,7 @@ class _Hair:
 
     def line_z(self, angle):
         front = max(0, math.cos(angle))
-        back_depth = {'asta': .34, 'yuno': .19, 'magna': .115,
+        back_depth = {'asta': .21, 'yuno': .19, 'magna': .115,
                       'vanessa': .25, 'noelle': .25, 'charmy': .20}[self.hero]
         back = self.eye.z-back_depth*self.h
         brow = {'asta': .27, 'yuno': .16, 'magna': .23,
@@ -55,6 +55,9 @@ class _Hair:
         # The temple edge falls with the actual skull rather than forming a
         # single high circular hairline visible as a helmet on the forehead.
         line = back + (self.eye.z+brow*self.h-back)*front**1.8
+        if self.hero == 'asta':
+            # A clean opening above the ear replaces the old long side cap.
+            line += .20*self.h*abs(math.sin(angle))**8
         if self.hero == 'charmy':
             # A deliberate, smooth ear opening is above the actual ear. The
             # previous low cap followed the ear relief and let skin islands
@@ -76,6 +79,10 @@ class _Hair:
             point = hit
         if self.hero == 'charmy' and abs(math.sin(a)) > .65 and t < .45:
             clearance = max(clearance, .025)
+        if self.hero == 'asta':
+            # The denser fitted shell clears the anatomical temple relief;
+            # isolated triangles of skin must not pierce the hair underlayer.
+            clearance = max(clearance, .019+.007*abs(math.sin(a))**8*(1-t)**2)
         return point + normal*(clearance*self.h)
 
     def surface_at_z(self, a, z, clearance=.014):
@@ -89,6 +96,8 @@ class _Hair:
 
     def base(self):
         rings, sides = 14, 64
+        if self.hero == 'asta':
+            rings, sides = 24, 96
         vertices, uv, faces = [], [], []
         for ring in range(rings):
             for k in range(sides):
@@ -248,39 +257,160 @@ class _Hair:
         self.m.tube(bridge,.006*self.h,'steel','head',7)
 
     def asta(self, level):
-        self.headband(level)
-        # Short interlocking wedges sweep out and back. Unequal roots, lengths
-        # and elevations avoid the former symmetric upright pineapple fan.
-        ends=[(-1.36,.24,.035),(-1.00,.11,.105),(-.57,.38,.17),
-              (-.10,.25,.235),(.38,.43,.14),(.91,.22,.12),(1.31,.34,.025)]
-        wedge=[.72,1,.67,.26,.008]
-        for k,(x,y,lift) in enumerate(ends):
-            root=self.cap(.42+.08*math.sin(k*1.8),(.075*x+.012*(k%2))%1)
-            end=self.pos(x,y,(self.top-self.eye.z)/self.h+lift)
-            self.lock([root,self.pos(x*.70,-.43,.50+.04*(k%3)),
-                       end+Vector((-x*.12*self.rx,-.13*self.ry,-.095*self.h)),end],
-                      (.20+.012*(k%3))*self.rx,.108*self.rx,profile=wedge)
-        angles=[.79,1.18,1.67,2.14,2.64,3.22,3.79,4.22,4.83,5.32,5.68]
-        for k,a in enumerate(angles):
-            root=self.cap(.32+.07*(k%3),a/TAU)
-            normal=Vector((math.sin(a),-math.cos(a),.09)).normalized()
-            end=self.cap(.66+.05*math.sin(k*1.8),a/TAU)+normal*((.15+.025*math.sin(k*2.4))*self.h)
-            end.z+=(.035+.024*math.cos(k*1.3))*self.h
-            self.lock([root,self.cap(.61,a/TAU)+normal*.035*self.h,
-                       end-normal*.075*self.h,end],(.21+.012*(k%2))*self.rx,
-                      .108*self.rx,profile=wedge)
-        # A second elevation of smaller groups breaks the big-leaf silhouette.
-        for k,x in enumerate([-.91,-.47,.08,.54,.98]):
-            root=self.cap(.25+.025*(k%2),(.055*x)%1)
-            end=self.pos(x*1.07,-.54+.13*(k%3),.49+.065*math.sin(k*1.9))
-            self.lock([root,self.pos(x*.72,-.77,.36),
-                       end+Vector((-.08*self.rx,-.02*self.ry,-.04*self.h)),end],
-                      .175*self.rx,.085*self.rx,profile=wedge)
-        self.side_nape(2,1.15,length_scale=.56,width_scale=.76)
-        # One off-centre swept point; keep the right-hand band emblem visible.
-        self.fringe([-.83,-.56,-.22,.18,.78], [.14,.105,.16,.025,.19],
-                    [.16,.18,.16,.235,.14],root_shift=-.16,root_height=.62,
-                    depth=.082,profile=[.46,1,.66,.25,.01])
+        profile=[.46,.98,1,.66,.008]
+
+        def fitted_clump(controls, width, depth, tip=(0,0,0), lift=.010, shape=None):
+            # Interpolate ON the fitted skull, rather than bridging four
+            # off-surface points. Broad overlapping middles cover the crown;
+            # only the last third peels away into a short curved point.
+            guides=[Vector(p) for p in controls]
+            samples=[]
+            for s in np.linspace(0,1,19):
+                q=(guides[0]*(1-s)**3+guides[1]*(3*s*(1-s)**2)
+                   +guides[2]*(3*s*s*(1-s))+guides[3]*s**3)
+                p=self.cap(float(np.clip(q.x,0,.995)),float(q.y)/TAU)
+                radial=self.radial(p)
+                p+=radial*(lift*self.h*math.sin(math.pi*s))
+                f=max(0,min(1,(s-.64)/.36));f=f*f*(3-2*f)
+                p+=(radial*tip[0]+Vector((0,tip[1],tip[2])))*(self.h*f)
+                samples.append(p)
+            self.sweep(samples,width*self.rx,depth*self.rx,profile=shape or profile)
+
+        # Complete lower crown coverage. These interlocking shallow locks
+        # reach the band, including the front upper edge; none are tall fins.
+        for k in range(16):
+            a=TAU*k/16+.035*math.sin(k*2.1)
+            front=max(0,math.cos(a))
+            end=.19-.115*front
+            fitted_clump([(.89,a-.34),(.78,a-.22),(.43,a+.03),(end,a+.10)],
+                         .215+.015*(k%3),.026,
+                         tip=(.006,.004,.004),lift=.002)
+
+        # Crossing whorl locks cover the pole itself, where a ring of buried
+        # roots would otherwise expose a smooth bald dome.
+        for k,a in enumerate([-.60,.38,1.32]):
+            fitted_clump([(.56,a),(.99,a+.15),(1.025,a+1.25),(.48,a+2.05)],
+                         .225-.015*k,.032,tip=(.008,.006,.006),lift=.004)
+
+        # The shallow downward-flowing coat supplies coverage only. Eight
+        # main locks grow from LOW buried frontal/side roots UP and BACK,
+        # with deliberately unequal endpoints outside the skull surface.
+        # Their distribution is frontal, not an evenly spaced radial ring.
+        # Free-space cubic spines give the whole lock its curve. Applying a
+        # large displacement only in the final third made thin straight
+        # needles, irrespective of the intended skull-following flow.
+        crown=(self.top-self.eye.z)/self.h
+        main=[(-1.42,.18,-.03),(-1.16,.06,.07),(-.83,.34,.11),
+              (-.40,.18,.22),(.03,.36,.14),(.37,.14,.17),
+              (.76,.22,.12),(1.13,.06,.03),(1.43,.28,-.07)]
+        broad=[.50,1,.97,.55,.008]
+        for k,(x,y,lift) in enumerate(main):
+            root=self.cap(.10+.025*(k%3),(.11*x+.008*(k%2))%1)
+            end=self.pos(x,y,crown+lift)
+            shoulder=root+self.radial(root)*(.040*self.h)
+            shoulder+=Vector((x*.08*self.rx,.06*self.ry,.15*self.h))
+            bend=end+Vector((-x*.24*self.rx,-(.18+.025*(k%3))*self.ry,-.10*self.h))
+            self.lock([root,shoulder,bend,end],(.18+.025*(k%3))*self.rx,
+                      .085*self.rx,profile=broad)
+        # Staggered side/back accents turn with the skull. Their smaller
+        # curves break the smooth rear dome without forming a repeated ring.
+        for k,a in enumerate([1.15,1.82,2.44,3.22,3.91,4.62,5.32]):
+            root=self.cap(.35+.04*(k%3),a/TAU)
+            normal=Vector((math.sin(a),-math.cos(a),.06)).normalized()
+            end=self.cap(.65+.04*math.cos(k*1.3),(a+.09)/TAU)
+            end+=normal*((.11+.025*math.sin(k*1.7))*self.h)+Vector((0,0,.025*self.h))
+            self.lock([root,self.cap(.50,a/TAU)+normal*.015*self.h,
+                       end-normal*.060*self.h-Vector((0,.02*self.ry,.035*self.h)),end],
+                      (.145+.012*(k%3))*self.rx,.070*self.rx,
+                      profile=[.45,1,.95,.50,.008])
+        # One narrower, taller cowlick breaks the upper outline.
+        crown=(self.top-self.eye.z)/self.h
+        self.lock([self.cap(.70,.49),self.cap(.94,.52),
+                   self.pos(-.18,.56,crown+.09),self.pos(-.11,.62,crown+.15)],
+                  .090*self.rx,.045*self.rx,profile=[.40,1,.77,.31,.008])
+
+        # Short outward temple flips leave an intentional whole ear opening.
+        for side in (-1,1):
+            for k in range(3):
+                a=side*(1.00+.19*k)
+                fitted_clump([(.29,a-.12*side),(.22,a),(.08,a+.05*side),(.015,a+.14*side)],
+                             .155-.012*k,.060,tip=(.055,.012,.027+.009*k),lift=.008)
+
+        # Two compact overlapping nape rows terminate at the upper neck.
+        for row in range(2):
+            for k,a in enumerate([2.02,2.56,3.10,3.64,4.18]):
+                a+=(row-.5)*.13
+                fitted_clump([(.33-.14*row,a-.10),(.25-.10*row,a-.02),
+                              (.12-.05*row,a+.06),(.055-.045*row,a+.12)],
+                             .150-.015*row,.045,
+                             tip=(.038+.016*row,.012,.016+.008*row),lift=.008,
+                             shape=[.38,1,.88,.36,.008])
+
+        # Fit the band around the finished roots rather than the bare head.
+        # Keep only skin/hair in this temporary BVH; clothes and props must
+        # not influence the fit. Forehead locks below use the skin tree again.
+        skin_tree=self.tree
+        band_faces=[face for face,material in zip(self.m.f,self.m.m)
+                    if material in {'skin','hair'}]
+        hair_tree=BVHTree.FromPolygons([Vector(p) for p in self.m.v],band_faces)
+        def radius(tree,angle,z):
+            normal=Vector((math.sin(angle),-math.cos(angle),0))
+            center=Vector((self.eye.x,self.cy,z))
+            hit,_,_,_=tree.ray_cast(center+normal*self.h*1.8,-normal,self.h*3.6)
+            if hit is not None:return (hit-center).dot(normal)
+            return math.hypot(self.rx*math.sin(angle),self.ry*math.cos(angle))
+        # A cloth band bridges individual roots. Direct ray projection into
+        # every crevice made sharp notches and self-intersections at its rim.
+        # Dilate then smooth the positive root clearance, keeping a continuous
+        # periodic envelope outside the hair while preserving the skull fit.
+        count=192
+        middle=self.eye.z+.255*self.h
+        height=.145*self.h
+        excess=[]
+        for k in range(count):
+            angle=TAU*k/count
+            values=[]
+            for t in np.linspace(0,1,5):
+                z=middle+(t-.5)*height-.026*self.h*max(0,-math.cos(angle))
+                values.append(max(0,radius(hair_tree,angle,z)-radius(skin_tree,angle,z)))
+            excess.append(max(values))
+        dilated=np.maximum.reduce([np.roll(excess,k) for k in range(-3,4)])
+        kernel=np.asarray([1,3,6,8,6,3,1],dtype=float);kernel/=kernel.sum()
+        envelope=sum(weight*np.roll(dilated,k-3) for k,weight in enumerate(kernel))
+        original_surface=self.surface_at_z
+        def band_surface(angle,z,clearance=.014):
+            position=(angle%TAU)/TAU*count
+            index=int(position);fraction=position-index
+            extra=envelope[index]*(1-fraction)+envelope[(index+1)%count]*fraction
+            normal=Vector((math.sin(angle),-math.cos(angle),0))
+            return Vector((self.eye.x,self.cy,z))+normal*(radius(skin_tree,angle,z)+extra+clearance*self.h)
+        try:
+            self.surface_at_z=band_surface
+            self.headband(level)
+        finally:
+            self.tree=skin_tree
+            self.surface_at_z=original_surface
+
+        def front_point(x,z,clearance=.013):
+            # The three central points emerge from beneath the band and
+            # follow the real forehead, retaining closed lenticular volume.
+            p=self.pos(x,-1,z)
+            hit,_,_,_=self.tree.ray_cast(Vector((p.x,self.cy-self.h*2,p.z)),Vector((0,1,0)),self.h*4)
+            if hit is not None:p.y=hit.y-clearance*self.h
+            return p
+
+        for x0,x1,end,width in [(-.29,-.32,.065,.16),(.015,.015,.025,.19),(.28,.33,.105,.145)]:
+            self.lock([front_point(x0,.25),front_point(x0*.9,.185),
+                       front_point(x1,.075+end*.45),front_point(x1,end)],
+                      width*self.rx,.045*self.rx,profile=[.46,1,.80,.35,.008])
+        for side in (-1,1):
+            for k in range(2):
+                self.lock([front_point(side*(.64+.10*k),.235-.065*k),
+                           front_point(side*(.80+.09*k),.12-.075*k),
+                           self.pos(side*(1.08+.04*k),-.70,.005-.055*k),
+                           self.pos(side*(1.17+.025*k),-.57,.040-.055*k)],
+                          (.155-.018*k)*self.rx,.055*self.rx,
+                          profile=[.42,1,.72,.30,.008])
 
     def yuno(self):
         # Short black clusters lie across one another and out toward the

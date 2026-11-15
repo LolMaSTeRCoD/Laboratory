@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "release": "0.6.3",
+  "verified_date": "2026-11-15",
+  "scope": "Asta hair/headband and hidden shoulder sleeve refinement; fresh complete build and visible native renderer validation.",
+  "artifacts": {
+    "executable": {
+      "name": "KDTD.exe",
+      "file_version": "0.6.3.0",
+      "bytes": 409084240,
+      "sha256": "C4A11892395BE2CD5AAF1EB3AF7742EE653EA215DCF8BC700E3FFD33B35CF6C8"
+    },
+    "archive": {
+      "path": "GodotRebuild/Builds/Release/KDTD-Windows.zip",
+      "bytes": 331882694,
+      "sha256": "2B6DAF8BC2EA19FE75A25A90BC250A895AEC8D8D7D9A1C2858F162DF76DCB614",
+      "contents": [
+        "KDTD.exe",
+        "README.txt"
+      ],
+      "embedded_executable_hash_verified": true
+    }
+  },
+  "build": {
+    "status": "passed",
+    "command": "pwsh -File ./GodotRebuild/build_KDTD.ps1 -ReuseModels",
+    "engine": "Godot 4.7.2",
+    "model_tool": "Blender 5.2.3",
+    "script_errors": 0,
+    "engine_errors": 0,
+    "objectdb_leak_warnings": 0,
+    "canonical_executable_published_after_staging_checks": true,
+    "standalone_executable_startup": "passed",
+    "embedded_package_isolation": "passed"
+  },
+  "model_validation": {
+    "status": "passed",
+    "hero_glbs": 30,
+    "heroes": 6,
+    "ranks_per_hero": 5,
+    "bones_per_hero": 166,
+    "hero_clips": [
+      "Idle",
+      "Attack",
+      "Ability"
+    ],
+    "distinct_geometry_per_rank": true,
+    "embedded_glb_material_images": true,
+    "finite_geometry_indices_uv_and_normalized_weights": true,
+    "self_contained_editable_blend_files": 6,
+    "total_runtime_glbs": 37,
+    "compact_lod_meshes": 37,
+    "imported_atlas_pixel_guard": {
+      "status": "passed",
+      "models": 30
+    },
+    "lod_source_hash_uv_skin_weights_animation_contracts": "passed",
+    "source_provenance": {
+      "changed_hero": "asta",
+      "changed_ranks": 5,
+      "other_hero_glbs_byte_unchanged": 25,
+      "other_hero_editables_byte_unchanged": 5,
+      "canonical_skeleton_unchanged": true,
+      "max_changed_hero_vertices": 69656,
+      "vertex_budget": 80000,
+      "source_isolation_report": "GodotRebuild/Builds/asta-hair-20261115/final/source-isolation.json",
+      "promotion_report": "GodotRebuild/Builds/asta-hair-20261115/promotion.json"
+    }
+  },
+  "gameplay_validation": {
+    "status": "passed",
+    "method": "Automated project regressions and isolated executable-resource interaction tests; native windowed executable rendering separately measured. Not a complete manual GUI playthrough.",
+    "controls": [
+      "startup/menu",
+      "six tower cards and mouse placement callbacks",
+      "legal grass and forbidden road placement",
+      "close spacing, cancellation, selection and statistics",
+      "upgrades and full-price sale",
+      "Vanessa aura modes and effective stats",
+      "wave spawning, targeting, damage, armor, rewards and death cleanup",
+      "camera orbit, cursor zoom, map fit, mouse release and Home reset",
+      "independent music/SFX and persisted settings",
+      "resilient looping music playlist",
+      "panel layout and NPC inspection"
+    ],
+    "maps": 18,
+    "biomes": 6,
+    "unobstructed_build_samples": 4105,
+    "inspection_layout_cases": 42,
+    "full_panel_layouts": 3,
+    "combat_rule_checks": 7671,
+    "complete_first_wave_diagnostics": 12,
+    "animated_spell_origin_checks": 180,
+    "packed_spell_origin_checks": 180,
+    "packed_charmy_interaction_checks": 24,
+    "packed_runtime_models_loaded": 37,
+    "packed_lods_loaded": 37,
+    "complete_270_wave_simulation_rerun": false,
+    "manual_complete_campaign_playthrough": false,
+    "complete_campaign_evidence": {
+      "carried_forward_from": "0.6.1",
+      "newly_run": false,
+      "source_hashes_verified_unchanged": true,
+      "report": "docs/qa/0.6.3-gameplay-reuse.json",
+      "waves": 270,
+      "arenas": 18,
+      "transitions": 17,
+      "final_bosses_killed": 18,
+      "campaign_won": true
+    }
+  },
+  "native_gpu_validation": {
+    "status": "passed",
+    "target": "Final standalone KDTD.exe 0.6.3.0",
+    "gpu": {
+      "api": "1.4.315",
+      "name": "AMD Radeon RX 6700 XT",
+      "vendor": "AMD"
+    },
+    "renderer": "forward_plus",
+    "profile_mode": "capped60",
+    "engine_max_fps": 60,
+    "vsync_mode": 1,
+    "initial_warmup_frames": 180,
+    "sample_frames_per_scenario": 300,
+    "render_image_size": {
+      "height": 1377,
+      "width": 2448
+    },
+    "native_window_client_size": {
+      "height": 1377,
+      "width": 2560
+    },
+    "logical_ui_size": {
+      "height": 900,
+      "width": 1600
+    },
+    "render_scale_3d": 1.0,
+    "scenarios": [
+      {
+        "id": "far",
+        "scenario": "forest_far",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 60.0159,
+        "frame_ms": {
+          "max": 21.71,
+          "mean": 16.6622,
+          "p50": 16.586,
+          "p95": 19.556
+        },
+        "render_gpu_ms": {
+          "max": 15.638,
+          "mean": 11.0935,
+          "p50": 11.029,
+          "p95": 13.178
+        },
+        "video_memory_mib": {
+          "max": 1795.3631,
+          "mean": 1795.363,
+          "p50": 1795.3631,
+          "p95": 1795.3631
+        },
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        },
+        "camera": {
+          "orthographic_size": 49.8461538461538,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "near",
+        "scenario": "forest_near",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 59.9935,
+        "frame_ms": {
+          "max": 23.615,
+          "mean": 16.6685,
+          "p50": 16.629,
+          "p95": 20.022
+        },
+        "render_gpu_ms": {
+          "max": 18.791,
+          "mean": 11.1595,
+          "p50": 11.108,
+          "p95": 14.999
+        },
+        "video_memory_mib": {
+          "max": 1860.8628,
+          "mean": 1860.8628,
+          "p50": 1860.8628,
+          "p95": 1860.8628
+        },
+        "character_lod": {
+          "active_mesh_vertices": 6438860,
+          "compact": 0,
+          "high": 118,
+          "missing": 0,
+          "source_vertices": 6438860
+        },
+        "camera": {
+          "orthographic_size": 14.0,
+          "pitch_degrees": 45.0,
+          "yaw_degrees": 25.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "jungle",
+        "scenario": "jungle_far",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 60.0109,
+        "frame_ms": {
+          "max": 21.009,
+          "mean": 16.6636,
+          "p50": 16.666,
+          "p95": 18.014
+        },
+        "render_gpu_ms": {
+          "max": 18.189,
+          "mean": 11.3144,
+          "p50": 11.265,
+          "p95": 13.211
+        },
+        "video_memory_mib": {
+          "max": 1795.4433,
+          "mean": 1795.4433,
+          "p50": 1795.4433,
+          "p95": 1795.4433
+        },
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        },
+        "camera": {
+          "orthographic_size": 52.9615384615385,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      },
+      {
+        "id": "winter",
+        "scenario": "winter_stress_actual_close_view",
+        "sample_frames": 300,
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "fps_mean": 60.0106,
+        "frame_ms": {
+          "max": 19.585,
+          "mean": 16.6637,
+          "p50": 16.665,
+          "p95": 17.223
+        },
+        "render_gpu_ms": {
+          "max": 17.287,
+          "mean": 11.192,
+          "p50": 11.103,
+          "p95": 13.066
+        },
+        "video_memory_mib": {
+          "max": 1795.0117,
+          "mean": 1795.0117,
+          "p50": 1795.0117,
+          "p95": 1795.0117
+        },
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        },
+        "camera": {
+          "orthographic_size": 56.0769230769231,
+          "pitch_degrees": 55.0,
+          "yaw_degrees": 0.0
+        },
+        "output_image_size": {
+          "height": 1377,
+          "width": 2448
+        }
+      }
+    ],
+    "measurement": "Monotonic process-frame wall intervals; RenderingServer viewport GPU timestamps. Screenshot readback, unloaded biome gallery and hero showcase excluded from frame samples.",
+    "winter_caveat": "Actual winter orthographic size 56.077; a closer view, not the same far camera as forest/jungle.",
+    "limitations": [
+      "Capped 60 FPS with VSync, not uncapped throughput.",
+      "GPU timings are not GPU utilization percentages.",
+      "One RX 6700 XT, four short scenarios, not every campaign state or other hardware."
+    ],
+    "native_engine_log_clean": true,
+    "finished_phase_observed": true,
+    "process_auto_exited": true,
+    "visible_native_window_requested": true,
+    "gpu_timestamp_variation_guard": "passed in all four scenes"
+  },
+  "artistic_quality": {
+    "exact_canonical_likeness_achieved": false,
+    "method": "Independent full-volume anatomical reconstruction using MakeHuman CC0 topology, individual sculpt, hair, costumes and rigged geometry; reference images are not billboard substitutes.",
+    "reviewed": "17 actual GLB Idle/Attack/Ability views across Asta L1/L3/L5; other heroes unchanged.",
+    "remaining": [
+      "Exact canonical likeness remains unfinished: facial features, emblem and individual clump shapes still differ from the supplied reference.",
+      "Some rear hair layers remain visibly stylized; a small dark shoulder crease remains after removal of blue sleeve islands.",
+      "Landscape and attacking NPC artwork unchanged in this iteration."
+    ],
+    "landscape_art_reworked_in_this_release": false,
+    "attacking_npc_art_reworked_in_this_release": false
+  },
+  "evidence": {
+    "availability": "Large reports/renders remain local under ignored Builds; this is the portable summary.",
+    "paths": [
+      "GodotRebuild/Builds/release-063-build.log",
+      "GodotRebuild/Builds/quality-release-063-visible-qa/render.json",
+      "GodotRebuild/Builds/quality-release-063-visible-qa/engine.log",
+      "GodotRebuild/Builds/asta-hair-20261115/final/native-audit.json",
+      "GodotRebuild/Builds/asta-hair-20261115/final/packed-editable-audit.json",
+      "GodotRebuild/Builds/asta-hair-20261115/final/source-isolation.json",
+      "GodotRebuild/Builds/asta-hair-20261115/promotion.json",
+      "GodotRebuild/Builds/check-hero-glb-contracts.json",
+      "GodotRebuild/Builds/check-hero-import-textures.log",
+      "docs/qa/0.6.3-gameplay-reuse.json",
+      "GodotRebuild/Builds/Release/KDTD-Windows.zip.json",
+      "GodotRebuild/Builds/cleanup-063-local-caches.json",
+      "GodotRebuild/Builds/check-063-after-cache-cleanup.log"
+    ]
+  },
+  "based_on": "0.6.2",
+  "workspace_cleanup": {
+    "bytes_removed": 295183258,
+    "files_removed": 332,
+    "canonical_models_and_packed_source_verified": true,
+    "post_cleanup_native_startup": "passed",
+    "renders_reports_and_import_cache_preserved": true,
+    "report": "GodotRebuild/Builds/cleanup-063-local-caches.json"
+  }
+}

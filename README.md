@@ -1,7 +1,7 @@
 # Коди TD — Made by Alex
 
 Трёхмерная Tower Defense на Godot. Основной игровой проект находится в
-`GodotRebuild/project.godot`; текущая Windows-сборка — **0.6.2**.
+`GodotRebuild/project.godot`; текущая Windows-сборка — **0.6.3**.
 
 **[Скачать игру для Windows — ZIP](https://github.com/LolMaSTeRCoD/Laboratory/releases/latest/download/KDTD-Windows.zip)**.
 Распакуйте архив и запустите `KDTD.exe`; редактор и инструменты разработки не нужны.
@@ -84,6 +84,8 @@ pwsh -File .\GodotRebuild\build_KDTD.ps1
 [KDTD_STATUS.md](GodotRebuild/KDTD_STATUS.md),
 [COMBAT_UPDATE.md](GodotRebuild/COMBAT_UPDATE.md),
 [CHARACTER_PIPELINE.md](GodotRebuild/CHARACTER_PIPELINE.md),
+[причёска и плечи Асты 0.6.3](GodotRebuild/CHARACTER_LIKENESS_063.md),
+[проверки сборки 0.6.3](docs/qa/0.6.3.json),
 [изменения Асты 0.6.2](GodotRebuild/CHARACTER_LIKENESS_062.md),
 [проверки сборки 0.6.2](docs/qa/0.6.2.json),
 [изменения моделей 0.6.1](GodotRebuild/CHARACTER_LIKENESS_061.md),
