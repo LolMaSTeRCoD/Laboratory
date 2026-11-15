@@ -15,7 +15,10 @@ func _run() -> void:
 			if packed == null:
 				_fail("tower GLB failed to load: " + path)
 				return
-			var model := packed.instantiate()
+			var model := packed.instantiate() as Node3D
+			if model == null:
+				_fail("tower GLB is not a 3D scene: " + path)
+				return
 			root.add_child(model)
 			await process_frame
 			var skeleton := _find_class(model,"Skeleton3D") as Skeleton3D
@@ -26,7 +29,7 @@ func _run() -> void:
 			if skeleton == null or skeleton.get_bone_count() < 163:
 				_fail("%s L%d does not have the new anatomical/facial/finger rig" % [hero,level])
 				return
-			for required_bone in ["jaw","head","eye.L","finger2-3.R","finger5-3.L","cape","upper_arm.R"]:
+			for required_bone in ["jaw","head","eye.L","finger2-3.R","finger5-3.L","cape","upper_arm.R","hand.R"]:
 				if skeleton.find_bone(required_bone) < 0:
 					_fail("%s L%d missing anatomical bone %s" % [hero,level,required_bone])
 					return
@@ -68,10 +71,19 @@ func _run() -> void:
 				animator.advance(0.0)
 				var arm_bone := skeleton.find_bone("upper_arm.R")
 				var before_strike := skeleton.get_bone_pose_rotation(arm_bone)
+				var hand_bone := skeleton.find_bone("hand.R")
+				var before_hand := _bone_model_position(model,skeleton,hand_bone)
 				animator.advance(0.32)
 				var striking := skeleton.get_bone_pose_rotation(arm_bone)
 				if arm_bone < 0 or striking.angle_to(before_strike) < 0.1:
 					_fail("%s attack clip does not visibly animate the arm" % hero)
+					return
+				# Imported glTF characters face +Z before gameplay yaw is applied.
+				# A changed rotation alone also passes for a hand moving backwards
+				# through its own skirt. Check the actual casting/sword hand path.
+				var strike_hand := _bone_model_position(model,skeleton,hand_bone)
+				if strike_hand.z-before_hand.z < 0.10:
+					_fail("%s attack hand does not extend forwards: %s -> %s" % [hero,str(before_hand),str(strike_hand)])
 					return
 				animator.seek(animator.get_animation(attack_clip).length,true)
 				animator.advance(0.0)
@@ -96,6 +108,9 @@ func _find_class(node: Node, wanted_class: String) -> Node:
 		if found != null:
 			return found
 	return null
+
+func _bone_model_position(model: Node3D, skeleton: Skeleton3D, bone: int) -> Vector3:
+	return model.to_local(skeleton.to_global(skeleton.get_bone_global_pose(bone).origin))
 
 func _collect_skinned_meshes(node: Node) -> Array[MeshInstance3D]:
 	var result: Array[MeshInstance3D] = []

@@ -17,5 +17,13 @@
   `development-tools.lock.json`, `docs/EXTERNAL_TOOLS.md`, and
   `docs/EXTERNAL_SOURCE_GUIDE.md`. Those sources are not automatically integrated
   into the game runtime.
+- Prefer bounded, efficient work: batch independent reads, inspect only relevant
+  files and compact diagnostics, and reuse valid results when inputs are unchanged.
+  Regenerate only the affected character/ranks after an isolated asset change.
+  Repeat broader tests when dependencies or unresolved failures justify them.
+  Use subagents for concrete independent checks, avoiding duplicate investigations.
+  Preserve useful import/build caches; remove obsolete workshop copies only after
+  verifying canonical assets and editable sources. Quality and correctness take
+  priority when additional work is necessary.
 - Check gameplay interactions when changing placement, combat, UI, camera or
   assets. Relevant headless tests are in `GodotRebuild/tests/`.

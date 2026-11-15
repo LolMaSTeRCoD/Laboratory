@@ -5,7 +5,7 @@ import math
 import bpy
 import numpy as np
 
-REVISION = 'woven-surface-20261110-v1'
+REVISION = 'portrait-and-fabric-20261113-v2'
 
 
 def material(hero, name, color, kind, output):
@@ -14,9 +14,11 @@ def material(hero, name, color, kind, output):
     mat.diffuse_color = (*color,1)
     principled = mat.node_tree.nodes.get('Principled BSDF')
     principled.inputs['Base Color'].default_value = (*color,1)
-    roughness = {'skin':.62,'hair':.59,'fabric':.88,'leather':.68,
+    roughness = {'skin':.74,'hair':.73,'fabric':.88,'leather':.68,
                  'metal':.36,'iris':.30,'eye':.23}.get(kind,.82)
     principled.inputs['Roughness'].default_value = roughness
+    if kind in ['skin','hair']:
+        principled.inputs['Specular IOR Level'].default_value = .28
     if kind=='metal': principled.inputs['Metallic'].default_value = .72
     if kind not in ['skin','hair','fabric','leather','metal','iris']:
         return mat

@@ -130,6 +130,8 @@ foreach ($temporaryFile in @($StageOutput,$PublishTemp)) {
     Write-Host 'Importing project resources…'
     Invoke-GodotCheck 'Resource import' @('--headless','--editor','--path',$Project,'--quit') 'check-import.log'
 
+    Invoke-GodotCheck 'Imported hero atlas integrity' @('--headless','--path',$Project,'--script','res://tests/hero_import_textures_smoke.gd') 'check-hero-import-textures.log'
+
     Write-Host 'Preparing compact skinned character meshes for distant views…'
     Invoke-GodotCheck 'Character LOD build' @('--headless','--path',$Project,'--script','res://tools/build_character_lods.gd') 'check-build-lods.log'
     Invoke-GodotCheck 'Character LOD import' @('--headless','--editor','--path',$Project,'--quit') 'check-import-lods.log'

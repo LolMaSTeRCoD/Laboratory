@@ -12,7 +12,8 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).parent))
 from pack_character_materials import pack_character_materials
 from hero_surface_materials import material as pbr_hero_material
-from hero_costumes import add_mantle, add_bulls_crest, add_noelle_skirt_and_gaiters, add_costume_details, add_rank_details
+from hero_portrait_sculpt import sculpt_portrait
+from hero_costumes import add_mantle, add_bulls_crest, add_noelle_skirt_and_gaiters, add_costume_details, add_rank_details, _Underlayer
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT.parent / 'Source' / 'HeroPipeline' / 'MakeHuman'
@@ -21,20 +22,20 @@ EDITABLE = Path(os.environ.get('CADY_HERO_EDITABLE',str(ROOT.parent / 'Source' /
 TAU = math.tau
 
 HEROES = {
- 'asta': dict(height=2.12, width=1.11, head=1.50, jaw=.93, female=False,
-  skin=(.73,.50,.36), hair=(.27,.28,.235), cloth=(.07,.14,.21), main=(.018,.023,.030),
+ 'asta': dict(height=2.12, width=1.11, head=1.50, jaw=.98, female=False,
+  skin=(.80,.58,.43), hair=(.30,.31,.25), cloth=(.07,.14,.21), main=(.018,.023,.030),
   pants=(.025,.047,.075), leather=(.25,.13,.055), iris=(.28,.50,.10), accent=(.30,.018,.026)),
- 'yuno': dict(height=2.30, width=.93, head=1.24, jaw=.89, female=False,
-  skin=(.72,.48,.33), hair=(.018,.023,.030), cloth=(.032,.042,.058), main=(.016,.023,.036),
+ 'yuno': dict(height=2.30, width=.93, head=1.24, jaw=.97, female=False,
+  skin=(.81,.61,.47), hair=(.018,.023,.030), cloth=(.032,.042,.058), main=(.016,.023,.036),
   pants=(.022,.030,.040), leather=(.12,.075,.035), iris=(.49,.42,.12), accent=(.05,.35,.21)),
  'magna': dict(height=2.25, width=1.02, head=1.23, jaw=1.03, female=False,
-  skin=(.64,.36,.22), hair=(.36,.29,.51), cloth=(.035,.045,.075), main=(.019,.022,.030),
+  skin=(.72,.46,.31), hair=(.36,.29,.51), cloth=(.035,.045,.075), main=(.019,.022,.030),
   pants=(.025,.027,.052), leather=(.045,.04,.05), iris=(.15,.29,.50), accent=(.85,.12,.015)),
- 'vanessa': dict(height=2.34, width=.94, head=1.23, jaw=.82, female=True,
-  skin=(.73,.47,.34), hair=(.50,.22,.32), cloth=(.20,.033,.070), main=(.018,.022,.029),
+ 'vanessa': dict(height=2.34, width=.94, head=1.23, jaw=.91, female=True,
+  skin=(.83,.61,.47), hair=(.50,.22,.32), cloth=(.20,.033,.070), main=(.018,.022,.029),
   pants=(.20,.033,.070), leather=(.19,.06,.09), iris=(.40,.26,.53), accent=(.52,.08,.22)),
- 'noelle': dict(height=2.20, width=.88, head=1.30, jaw=.81, female=True,
-  skin=(.76,.53,.40), hair=(.62,.63,.70), cloth=(.77,.76,.72), main=(.018,.023,.033),
+ 'noelle': dict(height=2.20, width=.88, head=1.30, jaw=.88, female=True,
+  skin=(.86,.69,.56), hair=(.62,.63,.70), cloth=(.77,.76,.72), main=(.018,.023,.033),
   pants=(.73,.72,.72), leather=(.24,.09,.065), iris=(.45,.17,.49), accent=(.28,.12,.34)),
  'charmy': dict(height=1.62, width=1.06, head=1.72, jaw=.88, female=True,
   skin=(.82,.60,.45), hair=(.075,.047,.028), cloth=(.84,.82,.72), main=(.018,.022,.025),
@@ -76,18 +77,18 @@ NORMAL_CACHE={}
 # These deltas deform anatomical vertices and matching eye/lash helpers; they
 # do not add a face photograph or alter the deformation weights/skeleton.
 ANIME_HEAD_PROFILES = {
- 'asta': dict(anime=.90,asian=.55,eye=1.15,nose_depth=.38,nose_width=.20,
-              eye_x=1.10,eye_z=1.06,eye_tilt=.10,jaw=1.06,cheek=1.02,crown=.90,lip_height=.70,nose_tip=.045),
- 'yuno': dict(anime=.76,asian=.46,eye=.92,nose_depth=.22,nose_width=.22,
-              eye_x=1.09,eye_z=.90,eye_tilt=.09,jaw=.90,cheek=.97,crown=.92,lip_height=.66,nose_tip=.025),
- 'magna': dict(anime=.68,asian=.43,eye=.95,nose_depth=.14,nose_width=.10,
-              eye_x=1.04,eye_z=.95,eye_tilt=.12,jaw=1.10,cheek=1.03,crown=.92,lip_height=.76,nose_tip=.015),
- 'vanessa': dict(anime=.65,asian=.53,eye=1.02,nose_depth=.32,nose_width=.24,
-              eye_x=1.10,eye_z=.92,eye_tilt=.10,jaw=.92,cheek=1.02,crown=.92,lip_height=.94,nose_tip=.025),
- 'noelle': dict(anime=.84,asian=.58,eye=1.20,nose_depth=.48,nose_width=.35,
-              eye_x=1.16,eye_z=1.00,eye_tilt=.045,jaw=1.01,cheek=1.04,crown=.94,lip_height=.94,nose_tip=.05),
- 'charmy': dict(anime=.82,asian=.58,eye=1.00,nose_depth=.48,nose_width=.34,
-              eye_x=1.06,eye_z=1.14,eye_tilt=.015,jaw=1.12,cheek=1.03,crown=.95,lip_height=1.0,nose_tip=.035),
+ 'asta': dict(anime=.90,asian=.55,eye=1.15,nose_depth=1.05,nose_width=.75,
+              eye_x=1.15,eye_z=1.40,eye_tilt=.12,jaw=1.08,cheek=1.02,crown=.90,lip_height=.70,nose_tip=.045),
+ 'yuno': dict(anime=.76,asian=.46,eye=.92,nose_depth=.85,nose_width=.65,
+              eye_x=1.12,eye_z=1.06,eye_tilt=.10,jaw=.97,cheek=.99,crown=.92,lip_height=.66,nose_tip=.025),
+ 'magna': dict(anime=.68,asian=.43,eye=.95,nose_depth=.75,nose_width=.55,
+              eye_x=1.10,eye_z=1.12,eye_tilt=.13,jaw=1.10,cheek=1.03,crown=.92,lip_height=.76,nose_tip=.015),
+ 'vanessa': dict(anime=.65,asian=.53,eye=1.02,nose_depth=1.05,nose_width=.75,
+              eye_x=1.20,eye_z=.94,eye_tilt=.12,jaw=1.00,cheek=1.04,crown=.92,lip_height=.78,nose_tip=.025),
+ 'noelle': dict(anime=.84,asian=.58,eye=1.20,nose_depth=1.20,nose_width=.90,
+              eye_x=1.23,eye_z=1.35,eye_tilt=.060,jaw=1.04,cheek=1.06,crown=.84,lip_height=.76,nose_tip=.05),
+ 'charmy': dict(anime=.82,asian=.58,eye=1.00,nose_depth=1.30,nose_width=.95,
+              eye_x=1.08,eye_z=1.45,eye_tilt=.015,jaw=1.08,cheek=1.02,crown=.95,lip_height=.75,nose_tip=.035),
 }
 
 BODY_NEIGHBORS={i:set() for i in BODY_SET}
@@ -163,9 +164,10 @@ def sculpt(hero):
    sign=1 if side=='l' else -1
    for i,(x,h,d) in enumerate(p.copy()):
     if x*sign<0 or d<center[2]-.25:continue
-    wx=math.exp(-((x-center[0])/max(.01,rx*1.45))**6)
-    wz=math.exp(-((h-center[1])/max(.01,rz*1.65))**6)
+    wx=math.exp(-((x-center[0])/max(.01,rx*1.80))**2)
+    wz=math.exp(-((h-center[1])/max(.01,rz*2.20))**2)
     weight=wx*wz
+    if abs(x)<1e-7:weight*=.5
     p[i,0]+=(x-center[0])*(profile['eye_x']-1)*weight
     p[i,1]+=((h-center[1])*(profile['eye_z']-1)+sign*(x-center[0])*profile['eye_tilt'])*weight
   # Character-specific jaw planes and cheek breadth, with a smaller human
@@ -235,8 +237,9 @@ def sculpt(hero):
     # a compression of the entire skull. The previous crown squeeze created
     # an alien wedge and made the cheeks look gaunt.
     lower=math.exp(-((h-mouth_level+.10)/.87)**2)
-    p[i,0]*=1.015+.10*lower
+    p[i,0]*=1.005+.025*lower
     p[i,1]+=.13*math.exp(-((h-mouth_level+.42)/.65)**2)
+ sculpt_portrait(p,RAW,GROUPS,VERT_WEIGHTS,hero)
  # Put the feet on z=0; adjust rest x stride to a natural standing width.
  p[:,0]*=.83
  scale=cfg['height']/(p[list(GROUPS['body']),1].max()+8.1676)
@@ -516,7 +519,7 @@ def garments(m,body,p,hero,level,scale):
   # A smooth sewn envelope prevents anatomical sampling rows from making
   # stair-step ridges and jagged intersections at the shoulders/neck.
   neck_z=float(body[list(GROUPS['joint-neck']),2].mean())
-  bottom=waist+.23 if hero=='vanessa' else waist-.145 if hero=='asta' else waist-.035
+  bottom=waist+.23 if hero=='vanessa' else waist-.145 if hero=='asta' else waist+.025 if hero=='magna' else waist-.035
   upper=neck_z-.19 if hero=='vanessa' else neck_z-.09 if hero in ['asta','magna'] else neck_z-.015
   steps=np.linspace(0,1,41);fronts=[];backs=[]
   for t in steps:
@@ -531,6 +534,16 @@ def garments(m,body,p,hero,level,scale):
     previous=values.copy()
     for k in range(1,len(values)-1):values[k]=previous[k]*.5+(previous[k-1]+previous[k+1])*.25
   m.bodice_front_at_z=lambda z:float(np.interp((z-bottom)/max(.001,upper-bottom),steps,fronts))
+  def torso_weights(z):
+   t=max(0,min(1,(z-bottom)/max(.001,upper-bottom)))
+   return {'spine':1-t,'chest':t}
+  m.bodice_weights_at_z=torso_weights
+  hem_support=None
+  if hero=='asta':
+   # Fit the hanging shirt over the actual seat, including the offset used by
+   # the trousers. A single elliptical depth misses the two buttock volumes.
+   skin_faces=[f for f,material in zip(m.f,m.m) if material=='skin']
+   hem_support=BVHTree.FromPolygons([Vector(v) for v in m.v],skin_faces)
   def point(t,u):
    z=bottom+(upper-bottom)*t
    front=float(np.interp(t,steps,fronts));back=float(np.interp(t,steps,backs))
@@ -539,13 +552,23 @@ def garments(m,body,p,hero,level,scale):
    if hero=='asta' and t<.36:
     hip=body_surface[(np.abs(body_surface[:,2]-z)<.045)&(np.abs(body_surface[:,0])<.38)]
     if len(hip):
-     hip_width=float(np.abs(hip[:,0]).max())+.025
+     hip_width=float(np.abs(hip[:,0]).max())+.045
      rx=max(rx,hip_width*(1-min(1,t/.36))+.215*min(1,t/.36))
    ry=(back-front)*.5;cy=(front+back)*.5;a=u*TAU
    fold=.0025*math.sin(8*a+1.8*t)*math.sin(math.pi*t)
    if hero=='vanessa':z-=.045*max(0,math.cos(a))**4*t**4
    cosine=math.cos(a);front_curve=math.copysign(abs(cosine)**.55,cosine)
-   return (math.sin(a)*(rx+fold),cy-front_curve*(ry+fold),z)
+   x=math.sin(a)*(rx+fold);y=cy-front_curve*(ry+fold)
+   if hem_support is not None and t<.40 and cosine<-.05:
+    hit,_,_,_=hem_support.ray_cast(Vector((x,3,z)),Vector((0,-1,0)),6)
+    if hit is not None:
+     fade=max(0,min(1,(-cosine-.05)/.25))
+     # Tuck the shirt inside the belt at waist height, then let its lower
+     # hanging hem clear the trouser seat without cutting through the leather.
+     below_belt=max(0,min(1,(waist-.025-z)/.070))
+     safe=hit.y+.030+.025*below_belt
+     y+=fade*max(0,safe-y)
+   return (x,y,z)
   m.patch(36,80,point,material,lambda t,u:{'spine':1-t,'chest':t},thickness=.0025)
  # Clothes are fitted continuous shells of anatomical quad topology with skin weights.
  if hero in ['asta','magna']:
@@ -556,7 +579,8 @@ def garments(m,body,p,hero,level,scale):
  elif hero=='noelle':
   tailored_torso('white');m.shell(body,p,arms,'white',.036,.006,adjust=cuff_boundary)
  elif hero=='vanessa':
-  tailored_torso('cloth')
+  from hero_costumes import add_vanessa_bodice
+  add_vanessa_bodice(m,body,GROUPS,waist)
   # Long fingerless gloves end at the wrist. A rectangular height mask also
   # swallowed part of the hands, producing mitten-shaped protrusions in Idle.
   m.shell(body,p,lambda x,h,d:abs(x)>2.1 and .08<sleeve_phase(x,h,d)<1.025,'cloth',.020,.003)
@@ -572,16 +596,36 @@ def garments(m,body,p,hero,level,scale):
     section=body_surface[(np.abs(body_surface[:,2]-z)<.07)&(np.abs(body_surface[:,0])<.29)]
     y=float(section[:,1].min())-.035 if len(section) else -.18
     return (x,y+.042*u*u,z)
-   m.patch(24,16,jacket_point,'cloth',lambda t,u:{'spine':1-t,'chest':t})
+   m.patch(24,16,jacket_point,'cloth',lambda t,u:{'spine':1-t,'chest':t},thickness=.0025)
    m.tube([jacket_point(t,0) for t in np.linspace(0,1,25)],.0032,'silver','chest',7)
  if hero=='yuno':
-  # Long, fitted double-breasted uniform beneath the separate cape.
-  m.patch(18,72,lambda t,u:((.220+.023*t)*math.sin(.08+u*(TAU-.16)),
-       -.175*math.cos(.08+u*(TAU-.16)),waist+.045-t*.43),'cloth','spine')
+  # A sewn coat tail starts inside the waist belt. The old oversized fixed
+  # cylinder created a projecting horizontal shelf at the back and sides.
+  section=body_surface[(np.abs(body_surface[:,2]-waist)<.035)&(np.abs(body_surface[:,0])<.30)]
+  coat_rx=float(np.percentile(np.abs(section[:,0]),98))+.022
+  coat_front=float(np.percentile(section[:,1],2))-.024
+  coat_back=float(np.percentile(section[:,1],98))+.024
+  coat_cy=(coat_front+coat_back)*.5;coat_ry=(coat_back-coat_front)*.5
+  def coat(t,u):
+   opening=.08+.20*t**1.5;a=opening+u*(TAU-2*opening)
+   rx=coat_rx+.010*math.sin(math.pi*t);ry=coat_ry+.006*t
+   fold=.0020*math.sin(a*10+.7*t)*math.sin(math.pi*t)
+   z=waist+.025-.43*t+(.035*math.sin(a)**2+.015*math.cos(a))*t**3
+   return (math.sin(a)*(rx+fold),coat_cy-math.cos(a)*(ry+fold),z)
+  def coat_weights(t,u):return {'spine':1-.18*t,'cape':.18*t}
+  m.patch(24,80,coat,'cloth',coat_weights,thickness=.0025)
+  for edge in [0,1]:
+   samples=[(t,edge) for t in np.linspace(0,1,31)]
+   m.tube([coat(t,u) for t,u in samples],.0018,'gold',[coat_weights(t,u) for t,u in samples for _ in range(6)],6)
+  def coat_front_at(z,x):
+   t=max(0,min(1,(waist+.025-z)/.43));rx=coat_rx+.010*math.sin(math.pi*t)
+   return coat_cy-(coat_ry+.006*t)*math.sqrt(max(.01,1-(x/rx)**2))-.008
+  m.yuno_coat_front_at=coat_front_at
+  m.yuno_coat_weights_at_z=lambda z:coat_weights(max(0,min(1,(waist+.025-z)/.43)),0)
  if female:
   # Keep the fitted underlayer above the pleated skirt. A long shared leg
   # mask made Noelle's separate skirt read as two bicycle-short legs.
-  shorts_hem=-.72
+  shorts_hem=-.40 if hero=='vanessa' else -.72
   m.shell(body,p,lambda x,h,d:shorts_hem<h<1.6 and abs(x)<1.95,'cloth' if hero=='vanessa' else 'accent',.022,.003,hem=shorts_hem)
  if not female:
   hem=-5.0 if hero=='asta' else -6.35
@@ -619,22 +663,35 @@ def garments(m,body,p,hero,level,scale):
  collar=top+.015
  # A closed standing collar bridges the neckline; it also covers the overlap
  # where the separately patterned tunic and shoulder mantle meet.
- if hero!='vanessa':
-  neck_section=body_surface[(np.abs(body_surface[:,2]-(neck_z+.01))<.035)&(np.abs(body_surface[:,0])<.14)]
+ if hero not in ['vanessa','noelle']:
+  neck_limit={'asta':.077,'magna':.076,'yuno':.074,'noelle':.066,'charmy':.053}[hero]
+  # A horizontal slice can include the jaw/shoulder after proportion morphs.
+  # Do not let those points turn a neck collar into a broad shoulder shelf.
+  neck_section=body_surface[(np.abs(body_surface[:,2]-(neck_z+.01))<.028)&(np.abs(body_surface[:,0])<neck_limit+.008)]
   neck_front=float(neck_section[:,1].min())-.008 if len(neck_section) else -.095
   neck_back=float(neck_section[:,1].max())+.008 if len(neck_section) else .065
-  neck_cy=(neck_front+neck_back)*.5;neck_ry=(neck_back-neck_front)*.5
-  neck_rx=max(abs(neck_section[:,0]))+.008 if len(neck_section) else .085
+  neck_cy=(neck_front+neck_back)*.5;neck_ry=min(.080,max(.045,(neck_back-neck_front)*.5))
+  neck_rx=min(neck_limit,max(abs(neck_section[:,0]))+.006) if len(neck_section) else neck_limit
   opening=.48 if hero in ['asta','magna'] else .12
-  m.patch(7,64,lambda t,u:(math.sin(opening+u*(TAU-2*opening))*(neck_rx+.025*(1-t)),neck_cy-math.cos(opening+u*(TAU-2*opening))*(neck_ry+.020*(1-t)),neck_z-.045+t*.070),'cloth' if hero in ['asta','magna','yuno'] else 'white','neck',thickness=.0025)
+  collar_height=.038 if hero=='noelle' else .070
+  collar_flare=.008
+  collar_depth=.007
+  m.patch(7,64,lambda t,u:(math.sin(opening+u*(TAU-2*opening))*(neck_rx+collar_flare*(1-t)),neck_cy-math.cos(opening+u*(TAU-2*opening))*(neck_ry+collar_depth*(1-t)),neck_z-.045+t*collar_height),'cloth' if hero in ['asta','magna','yuno'] else 'white','neck',thickness=.0025)
+
  # Waist belt shell with distinct engraved metal buckle and utility pouch.
  waist_section=body_surface[(np.abs(body_surface[:,2]-waist)<.04)&(np.abs(body_surface[:,0])<.31)]
  belt_rx=max(.235,max(abs(waist_section[:,0]))+.045)
  belt_front=float(waist_section[:,1].min())-.055;belt_back=float(waist_section[:,1].max())+.045
  belt_cy=(belt_front+belt_back)/2;belt_ry=(belt_back-belt_front)/2
- m.patch(3,64,lambda t,u:(math.sin(TAU*u)*belt_rx,belt_cy-math.cos(TAU*u)*belt_ry,waist+(t-.5)*.070),'leather','spine')
- for x in [-.034,.034]:m.tube([(x,belt_front-.006,waist-.03),(x,belt_front-.006,waist+.03)],.005,'silver' if hero=='magna' else 'gold','spine',8)
- for z in [-.03,.03]:m.tube([(-.034,belt_front-.006,waist+z),(.034,belt_front-.006,waist+z)],.005,'gold','spine',8)
+ if hero not in ['noelle','vanessa']:
+  belt_support=_Underlayer(m,{'white','cloth','pants'},waist-.065,waist+.065,omit_arms=True) if hero in ['asta','magna'] else None
+  def belt_point(t,u):
+   q=(math.sin(TAU*u)*belt_rx,belt_cy-math.cos(TAU*u)*belt_ry,waist+(t-.5)*.070)
+   return belt_support.project(q,belt_cy,.010)[0] if belt_support is not None else q
+  m.patch(3,64,belt_point,'leather','spine',thickness=.003)
+  belt_front=min(belt_front,belt_point(.5,0)[1])
+  for x in [-.034,.034]:m.tube([(x,belt_front-.006,waist-.03),(x,belt_front-.006,waist+.03)],.005,'silver' if hero=='magna' else 'gold','spine',8)
+  for z in [-.03,.03]:m.tube([(-.034,belt_front-.006,waist+z),(.034,belt_front-.006,waist+z)],.005,'gold','spine',8)
  if hero in ['asta','noelle','vanessa']:
   # A closed leather grimoire satchel, with a fitted flap and side seams.
   verts=[];faces=[];rings=28
@@ -653,13 +710,14 @@ def garments(m,body,p,hero,level,scale):
   for side in [-1,1]:m.tube([(.21+side*.043,-.023,waist-.06),(.21+side*.039,-.020,waist-.218),(.21+side*.028,-.014,waist-.243)],.0016,'gold','spine',6)
  if hero=='yuno':
   for z in np.linspace(waist-.23,top-.16,6):
-   section=body_surface[(np.abs(body_surface[:,2]-z)<.08)&(np.abs(body_surface[:,0])<.20)]
-   front=float(section[:,1].min())-.040 if len(section) else -.19
-   for x in [-.065,.065]:m.ellipsoid((x,front,float(z)),(.012,.007,.012),'gold','chest' if z>waist+.12 else 'spine',12,8)
+   for x in [-.065,.065]:
+    if z<=waist+.025:
+     front=m.yuno_coat_front_at(float(z),x);weights=m.yuno_coat_weights_at_z(float(z))
+    else:
+     front=m.bodice_front_at_z(float(z))-.009;weights=m.bodice_weights_at_z(float(z))
+    m.ellipsoid((x,front,float(z)),(.012,.007,.012),'gold',weights,12,8)
  if hero=='noelle':
   add_noelle_skirt_and_gaiters(m,body,RAW,GROUPS,waist)
- if hero=='vanessa':
-  m.patch(20,32,lambda t,u:((u-.5)*(.35+.33*t),.07+.1*math.sin(math.pi*u)+.08*t,waist-.64*t),'cloth','cape')
  add_costume_details(m,body,hero,level,top,waist,GROUPS,RAW)
  # Rank changes are sewn into the individual costume: antimagic sleeve,
  # leaf embroidery, riveted gloves, Valkyrie plates or Rouge charm.
@@ -774,246 +832,31 @@ def face_hair(m,body,hero,level):
    y=hit.y-.0026 if hit is not None else center.y-.001
    brow.append((x,y,z))
   thick=.0026 if hero=='asta' else .0022 if hero in ['yuno','magna'] else .0015
-  m.tube(brow,[max(.00035,thick*math.sin(math.pi*(.10+.80*t))) for t in np.linspace(0,1,23)],'hair' if hero=='asta' else 'black','head',8)
- # Fit the scalp to the deformed head. The rear hairline reaches the nape;
- # a closed cap and under-layer avoid bald gaps when viewed from the side.
- eye_z=sum(c.z for c in eye_centers)/2
- top=max(body[i][2] for i in GROUPS['body'])
- band_z=eye_z+(.068 if hero=='asta' else .075)
- scalp=np.array([body[i] for i in GROUPS['body'] if abs(body[i,2]-band_z)<.018])
- band_rx=max(abs(scalp[:,0]))+.006
- band_cy=(scalp[:,1].min()+scalp[:,1].max())*.5
- band_ry=(scalp[:,1].max()-scalp[:,1].min())*.5+.006
- rx=band_rx;ry=band_ry;cy=band_cy
- def hairline(a):
-  front=max(0,math.cos(a))
-  back=eye_z-(.070 if hero in ['asta','yuno'] else .030)
-  if hero=='magna':
-   return eye_z+.045+max(0,math.cos(a))*(.020+.065*abs(math.sin(a))**.7)
-  return back+(band_z+.015-back)*front
- def cap(t,u):
-  a=TAU*u;e=t*math.pi*.5
-  point=Vector((math.sin(a)*rx*1.018*math.cos(e),cy-math.cos(a)*ry*1.018*math.cos(e),hairline(a)+(top+.005-hairline(a))*math.sin(e)))
-  normal=Vector((math.sin(a)*math.cos(e),-math.cos(a)*math.cos(e),math.sin(e)))
-  hit,_,_,_=face_surface.ray_cast(point+normal*.30,-normal,.60)
-  if hit is not None and hit.z>eye_z-.13:point=hit+normal*.007
-  # Shallow combed ridges keep the supporting scalp from reading as a helmet.
-  ridge=.0035*(.5+.5*math.cos(a*(15 if hero in ['asta','yuno'] else 19)+e*1.7))**3*math.sin(math.pi*t)
-  point+=normal*ridge
-  return tuple(point)
- scalp_face_start=len(m.f)
- m.patch(26,96,cap,'hair','head',thickness=.002)
- if hero=='magna':
-  for face_index in range(scalp_face_start,len(m.f)):
-   c=np.array([m.v[i] for i in m.f[face_index]]).mean(axis=0)
-   if abs(c[0])<.036 and c[1]<cy+.035:m.m[face_index]='black'
- def hair_path(points,width,depth,material='hair'):
-  # Closed, tapered elliptical locks. Tangent and radial frames give each
-  # strand real thickness from front/profile/back instead of flat triangles.
-  pts=[Vector(p) for p in points];verts=[];faces=[];uv=[];sides=12;previous_u=None
-  for i,p in enumerate(pts):
-   t=i/(len(pts)-1);tangent=(pts[min(i+1,len(pts)-1)]-pts[max(0,i-1)]).normalized()
-   radial=Vector((p.x,p.y-cy,max(0,p.z-eye_z)*.25))
-   if radial.length<.001:radial=Vector((0,-1,0))
-   radial.normalize();u=tangent.cross(radial) if previous_u is None else previous_u-tangent*previous_u.dot(tangent)
-   if u.length<.01:u=tangent.cross(Vector((0,0,1)))
-   if u.length<.01:u=tangent.cross(Vector((1,0,0)))
-   u.normalize()
-   if previous_u is not None and u.dot(previous_u)<0:u=-u
-   previous_u=u.copy();v=u.cross(tangent).normalized()
-   # Roots taper under the scalp instead of displaying oval end caps.
-   p=p-radial*.016*(1-t)**6
-   taper=max(.002,math.sin(math.pi*(.035+.965*t))**.52*(1-.70*t))
-   for j in range(sides):
-    a=TAU*j/sides
-    ridge=1+.12*max(0,math.sin(a))**4
-    verts.append(tuple(p+u*(math.cos(a)*width*taper)+v*(math.sin(a)*depth*taper*ridge)))
-    uv.append((j/sides,t))
-  for i in range(len(pts)-1):
-   for j in range(sides):a=i*sides+j;b=i*sides+(j+1)%sides;faces.append((a,b,b+sides,a+sides))
-  faces.extend([tuple(range(sides-1,-1,-1)),tuple((len(pts)-1)*sides+j for j in range(sides))])
-  m.add(verts,faces,material,'head',uv)
- def lock(points,width,depth,material='hair',front_band=False):
-  p=[Vector(q) for q in points]
-  curve=[]
-  for t in np.linspace(0,1,23):
-   point=p[0]*(1-t)**3+p[1]*3*t*(1-t)**2+p[2]*3*t*t*(1-t)+p[3]*t**3
-   if front_band and abs(point.z-band_z)<.070:
-    band_y=cy-(ry+.011)*math.sqrt(max(.08,1-(point.x/(rx+.011))**2))-.008
-    point.y=band_y
-   curve.append(tuple(point))
-  hair_path(curve,width,depth,material)
- def scalp_lock(a,root,end,reach,lift,width,depth):
-  # An entire lock follows the scalp before leaving it. This hides its root
-  # beneath adjacent locks, rather than attaching a little leaf to a helmet.
-  path=[]
-  for t in np.linspace(0,1,37):
-   theta=a+.11*math.sin(math.pi*t)
-   start=root;finish=end
-   if hero=='asta':
-    # Upper clumps start above the complete wrapped headband. The rear
-    # scalp also covers the nape, so a constant cap parameter alone put
-    # the back clump roots below the band and created hanging cones.
-    h0=hairline(theta)
-    minimum=math.asin(max(0,min(.96,(band_z+.025-h0)/max(.001,top+.005-h0))))/(math.pi*.5)
-    start=max(root,minimum);finish=max(end,min(.98,start+.13))
-   p=Vector(cap(start+(finish-start)*t,theta/TAU))
-   normal=Vector((math.sin(theta),-math.cos(theta),.25)).normalized()
-   emergence=max(0,(t-.38)/.62)**1.7
-   p+=normal*(reach*emergence)+Vector((0,0,lift*emergence))
-   p-=normal*.006*(1-t)**3
-   path.append(tuple(p))
-  hair_path(path,width,depth)
- if hero=='asta':
-  # Broad, interlocking silver spikes with roots buried in the scalp. The
-  # front is a separated asymmetrical fringe rather than a row of short fins.
-  for k in range(21):
-   a=TAU*k/21+.08
-   scalp_lock(a,.10,.79+.055*math.sin(k*1.8),.031+.009*math.sin(k*2.3),.019+.011*math.sin(k*1.3),.033,.010)
-  for k in range(17):
-   a=.60+(TAU-1.20)*k/16
-   scalp_lock(a,.015,.48+.045*math.sin(k*1.7),.035,.010,.027,.009)
-  lock([(-.012,cy+.010,top-.014),(-.026,cy+.012,top+.016),(-.024,cy+.018,top+.047),(.002,cy+.024,top+.055)],.023,.009)
-  lock([(.012,cy+.018,top-.015),(.020,cy+.025,top+.012),(.034,cy+.032,top+.029),(.050,cy+.040,top+.018)],.023,.008)
-  fringe=[(-.112,-.140,.036),(-.078,-.104,.022),(-.033,-.047,.006),(.004,.025,.012),(.047,.082,.025),(.099,.137,.041)]
-  for k,(x,endx,endz) in enumerate(fringe):
-   root=(x*.78,cy-ry-.007,band_z-.023)
-   lock([root,(x,cy-ry-.018,band_z-.018),(endx,cy-ry-.024,eye_z+endz+.018),(endx,cy-ry-.020,eye_z+endz)],.014 if k!=2 else .018,.0055,front_band=True)
-  for side in [-1,1]:
-   for k in range(4):
-    lock([(side*rx*.87,cy+.010+k*.028,band_z+.005),(side*rx*1.06,cy+.016+k*.029,eye_z+.038),(side*rx*1.14,cy+.025+k*.03,eye_z-.025),(side*rx*(1.14-k*.05),cy+.032+k*.032,eye_z-.045-k*.015)],.024,.010)
- elif hero=='yuno':
-  for k in range(21):
-   a=TAU*k/21+.06
-   scalp_lock(a,.93,.19+.04*math.sin(k*1.7),.017,.004+.007*math.sin(k*2.0),.028,.008)
-  for k in range(13):
-   a=.66+(TAU-1.32)*k/12
-   scalp_lock(a,.73,.17,.021,.006,.025,.008)
-  fringe=[(-.094,-.123,.007),(-.055,-.083,.043),(-.020,-.027,.003),(.017,.033,.021),(.057,.090,.039),(.092,.123,.004)]
-  for k,(x,endx,endz) in enumerate(fringe):
-   root=cap(.77,(math.asin(max(-.8,min(.8,x/rx*.62)))%TAU)/TAU)
-   lock([root,(x-.016,cy-ry*.78,top-.024),(endx,cy-ry-.008,eye_z+endz+.055),(endx,cy-ry-.007,eye_z+endz)],.030 if k in [2,3] else .028,.009)
-  lock([(-.023,cy+.016,top-.016),(-.036,cy+.020,top+.021),(-.027,cy+.022,top+.040),(-.004,cy+.026,top+.048)],.024,.009)
-  lock([(-.009,cy+.021,top-.017),(.009,cy+.025,top+.020),(.010,cy+.029,top+.026),(.026,cy+.033,top+.021)],.020,.008)
-  for side in [-1,1]:
-   for k in range(3):
-    lock([(side*rx*.83,cy+.018+k*.025,band_z-.018),(side*rx*1.02,cy+.035+k*.027,eye_z+.018),(side*rx*1.10,cy+.048+k*.030,eye_z-.060),(side*rx*(1.05-k*.045),cy+.050+k*.032,eye_z-.095-k*.018)],.026,.011)
- elif hero=='magna':
-  for side in [-1,1]:
-   for k in range(10):
-    a=side*(.30+.22*k)
-    scalp_lock(a,.08+.018*k,.87,.012,.025-.001*k,.026,.008)
-  for k in range(3):
-   a=(k-1)*.10;path=[]
-   for t in np.linspace(0,1,37):
-    p=Vector(cap(min(.97,t*1.10),a/TAU))
-    p+=Vector((.005*math.sin(math.pi*t),.018*t*t,max(0,(t-.70)/.30)*(.047-k*.006)))
-    path.append(tuple(p))
-   hair_path(path,.029-k*.003,.009,'black')
- elif hero=='vanessa':
-  # A continuous waved hair mass avoids a wig assembled from thick ribbons.
-  # The separate thin locks merely articulate the main three-dimensional shape.
-  def waved_volume(t,u):
-   a=.77+(TAU-1.54)*u
-   if t<=.34:
-    p=Vector(cap(.995*(1-t/.34),a/TAU))
-   else:
-    s=(t-.34)/.66;p=Vector(cap(0,a/TAU))
-    wave=.028*math.sin(s*math.pi*2.8+math.sin(a)*.7)*math.sin(s*math.pi*.85)
-    p.x+=math.sin(a)*(.010*s+wave)
-    p.y+=-math.cos(a)*(.012*s+wave*.60)+.021*s
-    p.z-=.43*s
-   return tuple(p)
-  m.patch(45,88,waved_volume,'hair','head',thickness=.013)
-  for k in range(19):
-   u=k/18
-   path=[]
-   for t in np.linspace(0,1,43):
-    p=Vector(waved_volume(t,u))
-    radial=Vector((p.x,p.y-cy,0)).normalized()
-    p+=radial*.004
-    p.z-=.016*math.sin(k*1.7)*t
-    path.append(tuple(p))
-   hair_path(path,.014,.007)
-  for k in range(4):
-   root=cap(.90-k*.025,(-.42+k*.045)%TAU/TAU)
-   tip=(rx*(.60+.06*k),cy-ry*.89,eye_z+.055-.015*k)
-   lock([root,(-rx*.015,cy-ry*.80,top+.010),(.12,cy-ry*1.03,eye_z+.145),tip],.030-k*.002,.010)
-  for side in [-1,1]:
-   for k in range(2):
-    path=[]
-    for t in np.linspace(0,1,39):
-     path.append((side*(rx*.87+(.018+.018*t)*math.sin(t*math.pi*2.2+k*.55)),cy-ry*.57+.020*t,eye_z+.13-t*(.385+.020*k)))
-    hair_path(path,.021,.010)
- elif hero=='noelle':
-  for k in range(10):
-   x=(k-4.5)*rx*.162
-   endz=eye_z+.081+.012*(abs(k-4.5)/4.5)**1.5
-   lock([(x*.62,cy-ry*.24,top-.025),(x*.88,cy-ry*.78,top-.016),(x*1.04,cy-ry-.012,endz+.034),(x*1.04,cy-ry-.010,endz)],rx*.115,.008)
-  for side in [-1,1]:
-   tie=Vector((side*rx*1.015,cy+.024,eye_z+.070))
-   def tail(t,u,s=side,c=tie):
-    a=TAU*u
-    radius=.046*math.sin(math.pi*(.06+.94*t))**.48
-    center=c+Vector((s*(.020+.047*math.sin(math.pi*t)),.055*t,-.585*t))
-    return tuple(center+Vector((math.cos(a)*radius,math.sin(a)*radius*.77,0)))
-   m.patch(42,56,tail,'hair','head')
-   for k in range(5):
-    a=TAU*k/5;path=[]
-    for t in np.linspace(0,1,39):
-     p=Vector(tail(t,k/5))
-     p+=Vector((math.cos(a)*.003,math.sin(a)*.003,0))
-     path.append(tuple(p))
-    hair_path(path,.012,.006)
-   lock([(side*rx*.70,cy-ry*.47,top-.030),(side*rx*1.02,cy-ry*.65,eye_z+.075),(side*rx*1.03,cy-ry*.53,eye_z-.045),(side*rx*.97,cy-ry*.44,eye_z-.115)],.024,.009)
-   for direction in [-1,1]:
-    def bow(t,u,s=side,d=direction,c=tie):
-     width=.057*math.sin(math.pi*(.07+.78*t))
-     return tuple(c+Vector((s*(.009+.061*t),-.023-.014*math.sin(math.pi*t)+(u-.5)*.010,d*(.006+.025*t)+(u-.5)*width)))
-    m.patch(18,12,bow,'accent','head',thickness=.0035)
-   m.ellipsoid(tuple(tie+Vector((side*.016,-.022,0))),(.014,.010,.017),'accent','head',18,10)
- elif hero=='charmy':
-  # Swept scalp ridges lead continuously into the bun; no blunt fringe stubs.
-  for k in range(16):
-   u=k/16;path=[]
-   for t in np.linspace(.08,.94,33):
-    p=Vector(cap(t,u))
-    radial=Vector((p.x,p.y-cy,max(0,p.z-eye_z)*.30)).normalized()
-    p+=radial*.0018
-    path.append(tuple(p))
-   hair_path(path,.008,.0035)
-  def bun(t,u):
-   phi=math.pi*(.001+t*.998);a=TAU*u;ridge=1+.040*math.cos(a*13+phi*3)
-   return (.008+.062*math.sin(phi)*math.cos(a)*ridge,cy+.028+.054*math.sin(phi)*math.sin(a)*ridge,top+.052+.064*math.cos(phi))
-  m.patch(28,80,bun,'hair','head')
-  for side in [-1,1]:
-   lock([(side*rx*.80,cy-ry*.34,band_z+.030),(side*rx*.99,cy-ry*.40,eye_z+.051),(side*rx*.97,cy-ry*.29,eye_z-.021),(side*rx*.88,cy-ry*.22,eye_z-.032)],.019,.008)
- if hero=='asta':
-  cloth_rx=rx+.011;cloth_ry=ry+.011
-  m.patch(6,80,lambda t,u:(cloth_rx*math.sin(TAU*u),cy-cloth_ry*math.cos(TAU*u),band_z+(t-.5)*.046),'main','head',thickness=.003)
-  # Raised Black Bulls horn/skull stitch, replacing the previous five beads.
-  ex=cloth_rx*.70;ey=cy-cloth_ry*.73-.009;ez=band_z
-  for side in [-1,1]:
-   m.tube([(ex+side*.014,ey,ez+.016),(ex+side*.012,ey-.002,ez+.002),(ex+side*.006,ey-.002,ez-.002),(ex+side*.007,ey,ez-.014)],.0029,'gold','head',8)
-   m.tube([(ex+side*.006,ey,ez+.004),(ex+side*.017,ey,ez+.008),(ex+side*.022,ey+.002,ez+.018)],.0025,'gold','head',8)
-  m.tube([(ex-.007,ey,ez-.011),(ex,ey-.002,ez-.018),(ex+.007,ey,ez-.011)],.0025,'gold','head',8)
- if hero=='magna':
-  for center in eye_centers:
-   sign=1 if center.x>0 else -1
-   outline=[(-.033,.012),(.033,.012+sign*.004),(.026,-.015),(-.027,-.014)]
-   verts=[(center.x+x,center.y+y,center.z+z) for y in [-.002,-.006] for x,z in outline]
-   m.add(verts,[(0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)],'lens','head')
-   m.tube([(center.x+x,center.y-.007,center.z+z) for x,z in outline+[outline[0]]],.0021,'steel','head',8)
-   m.tube([(center.x+sign*.033,center.y-.004,center.z+.010),(sign*rx*.95,cy-ry*.18,center.z+.006),(sign*rx*1.02,cy+.02,center.z-.008)],.0023,'steel','head',8)
-  a,b=eye_centers;m.tube([(a.x-.026,a.y-.005,a.z+.006),(0,min(a.y,b.y)-.007,a.z+.008),(b.x+.026,b.y-.005,b.z+.006)],.0022,'steel','head',8)
+  m.tube(brow,[max(.00035,thick*math.sin(math.pi*(.10+.80*t))) for t in np.linspace(0,1,23)],'black','head',8)
+ # Expressions, hair masses and accessories use this same deformed head.
+ from hero_facial_expression import add_mouth_expression
+ from hero_likeness_hair import add_hair_and_accessories
+ add_mouth_expression(m,body,hero,GROUPS,FACES,RAW,VERT_WEIGHTS)
+ add_hair_and_accessories(m,body,hero,level,GROUPS,FACES,eye_centers)
 
+
+
+def asta_grip_frame(index_knuckle,pinky_knuckle):
+ # A handle runs across the knuckle row, not along an arbitrary world Z axis.
+ axis=(Vector(index_knuckle)-Vector(pinky_knuckle)).normalized()
+ aim=Vector((-.20,.03,1.22)).normalized()
+ return axis,axis.rotation_difference(aim)
 
 def props(m,body,hero,level,top,waist):
  if hero=='asta':
   # Closed bevelled Demon Slayer cross-section with broad blade and central ridge.
   hand=Vector(body[list(GROUPS['joint-r-hand-3'])].mean(axis=0))
-  base=hand+Vector((-.018,-.012,.10));tip=base+Vector((-.20,.03,1.22))
-  axis=(tip-base).normalized();u=Vector((0,1,0));w=axis.cross(u).normalized()
+  knuckles=[Vector(body[RIG['joints'][RIG['bones']['finger%d-1.R'%finger]['head']]].mean(axis=0)) for finger in [2,5]]
+  axis,grip_alignment=asta_grip_frame(*knuckles)
+  base=hand+axis*.105;tip=base+axis*1.24
+  aim=grip_alignment @ axis
+  facing=(Vector((0,1,0))-aim*aim.y).normalized()
+  u=grip_alignment.inverted() @ facing;w=axis.cross(u).normalized()
   v=[];f=[]
   for t,half in [(0,.10),(.07,.170),(.76,.155),(.94,.14),(1,.075)]:
    p=base+(tip-base)*t
@@ -1042,21 +885,55 @@ def props(m,body,hero,level,top,waist):
    for k,(t,x) in enumerate([(.37,-.082),(.56,.072),(.72,-.061)]):
     m.tube([blade_mark(t+q*.018,x+q*.015) for q in np.linspace(-1,1,9)],.0010,'steel','hand.R',5)
  elif hero in ['yuno','vanessa','noelle']:
-  # A bound grimoire with real spine, page block and leather covers.
-  center=Vector((.32,-.10,waist+.14));v=[]
-  for x,y,z in [(-1,-1,-1),(1,-1,-1),(1,1,-1),(-1,1,-1),(-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1)]:v.append(tuple(center+Vector((x*.075,y*.023,z*.10))))
-  f=[(0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)]
-  m.add(v,f,'leather','spine')
-  for k in range(7):m.tube([(center.x-.07,center.y-.025,center.z-.08+k*.025),(center.x+.07,center.y-.025,center.z-.08+k*.025)],.0018,'white','spine',6)
+  # Closed covers and a separate inset page block. Page edges belong on the
+  # fore-edge, not as white stripes painted across the front cover.
+  center=Vector((.32,-.10,waist+.14))
+  def rounded_book_box(rx,rz,y,depth,material,radius=.008):
+   contour=[]
+   for cx,cz,start in [(rx-radius,rz-radius,0),(-rx+radius,rz-radius,math.pi/2),(-rx+radius,-rz+radius,math.pi),(rx-radius,-rz+radius,math.pi*1.5)]:
+    for a in np.linspace(start,start+math.pi/2,6):
+     contour.append((cx+radius*math.cos(a),cz+radius*math.sin(a)))
+   vertices=[tuple(center+Vector((x,y+dy,z))) for dy in [-depth/2,depth/2] for x,z in contour]
+   n=len(contour);faces=[tuple(range(n-1,-1,-1)),tuple(range(n,2*n))]
+   faces.extend((i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n))
+   m.add(vertices,faces,material,'spine')
+  rounded_book_box(.069,.093,0,.035,'white',.0035)
+  cover='main' if hero=='yuno' else ('cloth' if hero=='vanessa' else 'white')
+  for y in [-.022,.022]:rounded_book_box(.077,.102,y,.006,cover)
+  # Rounded binding, five small raised bands and fine page divisions.
+  m.tube([tuple(center+Vector((-.071,0,z))) for z in np.linspace(-.098,.098,20)],.022,cover,'spine',14)
+  for z in np.linspace(-.073,.073,5):
+   m.tube([tuple(center+Vector((-.071+.022*math.cos(a),.022*math.sin(a),float(z)))) for a in np.linspace(math.pi/2,math.pi*1.5,13)],.0016,'gold','spine',6)
+  for z in np.linspace(-.084,.084,19):
+   m.tube([tuple(center+Vector((.0694,y,float(z)))) for y in np.linspace(-.016,.016,4)],.00045,'leather','spine',5)
+  edge=[]
+  for cx,cz,start in [(.061,.086,0),(-.061,.086,math.pi/2),(-.061,-.086,math.pi),(.061,-.086,math.pi*1.5)]:
+   edge.extend(tuple(center+Vector((cx+.006*math.cos(a),-.026,cz+.006*math.sin(a)))) for a in np.linspace(start,start+math.pi/2,8))
+  edge.append(edge[0]);m.tube(edge,.0013,'gold','spine',6)
+  emblem='gold' if hero!='noelle' else 'accent'
+  for k in range(4 if hero=='yuno' else 3):
+   angle=TAU*k/(4 if hero=='yuno' else 3)
+   petal=[]
+   for a in np.linspace(0,TAU,25):
+    q=Vector((.009*math.sin(a),.014+.013*math.cos(a)))
+    x=q.x*math.cos(angle)-q.y*math.sin(angle);z=q.x*math.sin(angle)+q.y*math.cos(angle)
+    petal.append(tuple(center+Vector((x,-.027,z))))
+   m.tube(petal,.0017,emblem,'spine',6)
+  m.tube([tuple(center+Vector((0,-.027,-.012))),tuple(center+Vector((.008,-.027,-.047)))],.0018,emblem,'spine',6)
  # Crests follow the costume surface. They remain small sewn geometry.
  if hero=='yuno':
-  x=-.185;y=-.198;z=top-.25
+  # Project each stitch onto the same curved garment and use its deformation
+  # field. A rigid chest-bound emblem detaches when a shoulder raises the cape.
+  def sewn_stitch(offsets,radius):
+   points=[m.mantle_mark(dx,dz) for dx,dz in offsets]
+   weights=[m.mantle_mark_weights(dx,dz) for dx,dz in offsets for _ in range(7)]
+   m.tube(points,radius,'gold',weights,7)
   star=[]
   for k in range(25):
    a=TAU*k/24;r=.038 if k%2==0 else .023
-   star.append((x+math.sin(a)*r,y-.003,z+math.cos(a)*r))
-  m.tube(star,.0028,'gold','chest',7)
-  for side in [-1,1]:m.tube([(x+side*.018,y-.005,z-.008),(x,y-.006,z+.013),(x-side*.018,y-.005,z-.008)],.0025,'gold','chest',6)
+   star.append((math.sin(a)*r,math.cos(a)*r))
+  sewn_stitch(star,.0028)
+  for side in [-1,1]:sewn_stitch([(side*.018,-.008),(0,.013),(-side*.018,-.008)],.0025)
  else:
   add_bulls_crest(m,getattr(m,'costume_crest',(-.19,-.18,top-.20)),.76 if hero=='charmy' else .90)
 
@@ -1080,11 +957,22 @@ def create_mesh(m,mats,armature,hero,level):
    if name in groups and w>.0001:groups[name].add([i],w/total,'REPLACE')
  mod=obj.modifiers.new('AnatomicalSkin','ARMATURE');mod.object=armature;obj.parent=armature
  obj['pipeline']='anatomical-v2';obj['source_topology']='MakeHuman hm08 CC0';obj['character']=hero
+ obj['portrait_revision']='character-likeness-20261114-r3'
+ obj['costume_rank']=level
  return obj
 
 def animate(arm,hero):
  ad=arm.animation_data_create();bones=arm.pose.bones
  for b in bones:b.rotation_mode='XYZ'
+ if hero=='asta':
+  grip_axis,grip_alignment=asta_grip_frame(bones['finger2-1.R'].bone.head_local,bones['finger5-1.R'].bone.head_local)
+ def turn_in_armature(name,axis,angle):
+  # Mirrored anatomical bones have different local axes. Express the cast in
+  # the shared character frame instead of applying the same local Euler X to
+  # both arms (which sent the right hand behind the body and through skirts).
+  bone=bones[name];basis=bone.bone.matrix_local.to_quaternion()
+  delta=basis.inverted() @ Quaternion(axis,angle) @ basis
+  bone.rotation_euler=(delta @ bone.rotation_euler.to_quaternion()).to_euler()
  def pose(clip,t):
   for b in bones:b.rotation_euler=(0,0,0);b.location=(0,0,0)
   # Arms lower from the A-pose; joint rotations use the rig's consistent roll.
@@ -1095,6 +983,15 @@ def animate(arm,hero):
    bones['forearm.'+side].rotation_euler[0]=-.10
    for finger in range(1,6):
     for j in range(1,4):bones['finger%d-%d.%s'%(finger,j,side)].rotation_euler[0]=.08 if hero!='asta' or side=='L' else (.55 if j==1 else .72)
+  if hero=='asta':
+   wrist=bones['hand.R'];basis=wrist.bone.matrix_local.to_quaternion()
+   wrist.rotation_euler=(basis.inverted() @ grip_alignment @ basis).to_euler()
+   for finger in range(2,6):
+    for j,angle in enumerate([1.5,1.5,0],1):
+     name='finger%d-%d.R'%(finger,j);bones[name].rotation_euler=(0,0,0)
+     turn_in_armature(name,grip_axis,angle)
+   # The thumb opposes the four curled fingers instead of sharing their hinge.
+   for j,angle in enumerate([.6,1.5,1.5],1):bones['finger1-%d.R'%j].rotation_euler=(angle,0,0)
   breath=math.sin(t*TAU)
   bones['spine'].rotation_euler[0]=.018*breath
   bones['chest'].rotation_euler[1]=.025*breath
@@ -1117,25 +1014,24 @@ def animate(arm,hero):
     bones['spine'].rotation_euler[0]=-.07*a
     bones['chest'].rotation_euler[1]=.04*a
     for side,sign in [('L',1),('R',-1)]:
-     bones['upper_arm.'+side].rotation_euler[0]-=.72*a
-     bones['upper_arm.'+side].rotation_euler[2]+=sign*.22*a
-     bones['forearm.'+side].rotation_euler[0]=-.10-.56*a
-     bones['hand.'+side].rotation_euler[0]=-.24*a
+     turn_in_armature('upper_arm.'+side,(1,0,0),-.72*a)
+     turn_in_armature('upper_arm.'+side,(0,1,0),-sign*.12*a)
+     turn_in_armature('forearm.'+side,(1,0,0),-.56*a)
+     turn_in_armature('hand.'+side,(1,0,0),-.24*a)
      bones['thigh.'+side].rotation_euler[0]=.11*a
      bones['shin.'+side].rotation_euler[0]=-.18*a
      for finger in range(1,6):
       for j in range(1,4):bones['finger%d-%d.%s'%(finger,j,side)].rotation_euler[0]=.12-.10*a
    elif hero=='asta':
-    bones['upper_arm.R'].rotation_euler[0]+=-.95*a
-    bones['upper_arm.R'].rotation_euler[2]+=-.50*a
-    bones['forearm.R'].rotation_euler[0]=-.10-.55*a
-    bones['hand.R'].rotation_euler[1]=.30*a
+    turn_in_armature('upper_arm.R',(1,0,0),-.95*a)
+    turn_in_armature('upper_arm.R',(0,0,1),.35*a)
+    turn_in_armature('forearm.R',(1,0,0),-.55*a)
+    turn_in_armature('hand.R',(0,1,0),.30*a)
    else:
-    bones['upper_arm.R'].rotation_euler[0]+=-.95*a
-    bones['upper_arm.R'].rotation_euler[2]+=.20*a
-    bones['forearm.R'].rotation_euler[0]=-.10-.55*a
-    bones['hand.R'].rotation_euler[0]=-.30*a
-    bones['upper_arm.L'].rotation_euler[0]+=-.30*a
+    turn_in_armature('upper_arm.R',(1,0,0),-.95*a)
+    turn_in_armature('forearm.R',(1,0,0),-.55*a)
+    turn_in_armature('hand.R',(1,0,0),-.30*a)
+    turn_in_armature('upper_arm.L',(1,0,0),-.30*a)
     for j in range(1,4):bones['finger2-%d.R'%j].rotation_euler[0]=-.10*a
    bones['head'].rotation_euler[1]-=.10*a
    bones['cape'].rotation_euler[0]-=.12*a
@@ -1182,6 +1078,23 @@ def preview(hero,level,arm):
   for name,loc in [('front',(0,-6,1.55)),('side',(6,0,1.55)),('back',(0,6,1.55))]:
    cam.location=loc;cam.rotation_euler=(Vector((0,0,1.2))-cam.location).to_track_quat('-Z','Y').to_euler();scene.render.filepath=str(OUT/(hero+'_L%d_%s.png'%(level,name)));bpy.ops.render.render(write_still=True)
 
+def bind_waist_layers(m,support,waist):
+ # The old loft/waist belt used the mid-spine bone, whereas the anatomical
+ # trousers follow the pelvis and lower spine. Matching those lower layers
+ # to the same body skin prevents dynamic clipping without suppressing lean.
+ changed=0
+ for i,(position,weights) in enumerate(zip(m.v,m.w)):
+  z=position[2]
+  if z>=waist+.14 or sum(weights.get(n,0) for n in ['spine','chest'])<.995:continue
+  hit,_,face,distance=support.tree.find_nearest(Vector(position))
+  if hit is None or face is None or distance>.18:continue
+  matched=support.at_face(hit,face)
+  t=max(0,min(1,(z-waist-.02)/.12));blend=1-t*t*(3-2*t)
+  combined={name:value*(1-blend) for name,value in weights.items()}
+  for name,value in matched.items():combined[name]=combined.get(name,0)+value*blend
+  m.w[i]=support.normalize(combined);changed+=1
+ print('WAIST_LAYER_SKIN_MATCH',changed,flush=True)
+
 def build(hero,level):
  clean();body,p,scale=sculpt(hero);arm=rig(body,hero);m=Mesh();mats=materials(hero)
  # Exposed skin remains one connected anatomical region per visible body part;
@@ -1202,7 +1115,10 @@ def build(hero,level):
   m.shell(body,p,lambda x,h,d:h>5.28 or abs(x)>3.65 or -7.45<h<-4.70,'skin',0)
  else:
   m.shell(body,p,lambda x,h,d:h>-7.45 or hero=='noelle','skin',0)
- top,waist=garments(m,body,p,hero,level,scale);face_hair(m,body,hero,level);props(m,body,hero,level,top,waist)
+ waist_support=_Underlayer(m,{'skin'},0,3.5,width=.42,omit_arms=True) if hero in ['asta','magna'] else None
+ top,waist=garments(m,body,p,hero,level,scale)
+ if waist_support is not None:bind_waist_layers(m,waist_support,waist)
+ face_hair(m,body,hero,level);props(m,body,hero,level,top,waist)
  obj=create_mesh(m,mats,arm,hero,level);animate(arm,hero)
  OUT.mkdir(parents=True,exist_ok=True);EDITABLE.mkdir(parents=True,exist_ok=True)
  pack_character_materials(obj,hero+'_L%d'%level,OUT/'Atlases',resolution=2048)
