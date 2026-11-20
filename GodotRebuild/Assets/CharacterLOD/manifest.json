@@ -9,7 +9,7 @@
 			"low_triangles": 14842,
 			"low_vertices": 12872,
 			"source": "res://Assets/Enemies/goblin.glb",
-			"source_sha256": "0cd1062cf103198b8d1ef7f05a55e299b154fda3e273324abc2a767b00b6a0fb",
+			"source_sha256": "c0fea20a75ecd222057e061952d1400a79a662541fda3dc1a1ef5b897bd4fe92",
 			"vertex_ratio": 0.314895907233897
 		},
 		{
@@ -21,7 +21,7 @@
 			"low_triangles": 13800,
 			"low_vertices": 13915,
 			"source": "res://Assets/Enemies/orc.glb",
-			"source_sha256": "66829fcf5f6e00fd79accb684e942e71c748a7f19c4e3a9c3959d41be78f9faf",
+			"source_sha256": "0cad96b02d5c9e3674da222fa29261966f13a7db16c20aef1b6ad534e4c24e67",
 			"vertex_ratio": 0.319129417700617
 		},
 		{
@@ -33,7 +33,7 @@
 			"low_triangles": 12247,
 			"low_vertices": 18191,
 			"source": "res://Assets/Enemies/uruk.glb",
-			"source_sha256": "06324002929b01ff4903473e46a7b92444d3537e57900382bda4aafa80e00234",
+			"source_sha256": "6c6ffc9325b8c4b766a7c201a63abfb2b91d7478d5784bc26b84804f73b06f92",
 			"vertex_ratio": 0.228467006606214
 		},
 		{
@@ -45,7 +45,7 @@
 			"low_triangles": 11551,
 			"low_vertices": 16872,
 			"source": "res://Assets/Enemies/troll.glb",
-			"source_sha256": "9ddcb9ead88f8e0146abfc57681fb0696045dbcfbc2b6c968f272aa5c3a7430c",
+			"source_sha256": "d87e5e47824d4f435daac0128eb1b4fd9c7a41723a9817034be3180370973e5c",
 			"vertex_ratio": 0.184222307146367
 		},
 		{
@@ -63,7 +63,7 @@
 			"simplifier_reason": "vertex_budget",
 			"skin_locked_vertices": 14786.0,
 			"source": "res://Assets/Enemies/nazgul.glb",
-			"source_sha256": "b3b0b20ebb33cdc956bcdf63e7b1b93a12ec9cea2740afac294d923c95d721e7",
+			"source_sha256": "bd90cde3e724b972766b1b4c5bf4e388262a709c716f8c96aaa46f3badf49841",
 			"vertex_ratio": 0.400445086925096
 		},
 		{
@@ -75,7 +75,7 @@
 			"low_triangles": 4714,
 			"low_vertices": 4442,
 			"source": "res://Assets/Enemies/warg.glb",
-			"source_sha256": "2330ccecdbc368cb775cd58050a58854b25b37d5e2bb9c3f7db0c765e730f63d",
+			"source_sha256": "2dd8a70c13a837a77d8c72d5a8d1b0638d09f6c695875adfff1cb76cf01a18d4",
 			"vertex_ratio": 0.385824719881873
 		},
 		{
@@ -87,7 +87,7 @@
 			"low_triangles": 20967,
 			"low_vertices": 31009,
 			"source": "res://Assets/Enemies/boss_troll.glb",
-			"source_sha256": "bc48a29fb5cb7ae02df3b65b4454f96cea0ae650b8e5066ced3f512f86fb73ed",
+			"source_sha256": "4395d0524e3eba22b9d25bab348482691158aeac737376c7784cccf7cb81276d",
 			"vertex_ratio": 0.308219110002286
 		},
 		{

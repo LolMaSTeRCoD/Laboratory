@@ -2,7 +2,9 @@ extends Node3D
 
 const WorldArt = preload("res://scripts/world_art.gd")
 const RenderBenchmark = preload("res://scripts/render_benchmark.gd")
+const DefeatBenchmark = preload("res://scripts/defeat_benchmark.gd")
 const MagicEffects = preload("res://scripts/magic_effects.gd")
+const EnemyDefeatEffects = preload("res://scripts/enemy_defeat_effects.gd")
 const CharacterLOD = preload("res://scripts/character_lod.gd")
 const FrostUI = preload("res://scripts/ui_theme_frost.gd")
 const CombatBalance = preload("res://scripts/combat_balance.gd")
@@ -53,6 +55,9 @@ const FORMS := [
 const CARD_HINTS := ["Быстрый ближний удар","Дальний порыв ветра","Взрывной огненный удар","Аура урона или скорости","Замедляет и замораживает","Ближний удар по площади"]
 const ATTACK_SFX := ["res://Assets/Sfx/asta-slash.mp3","res://Assets/Sfx/yuno-wind.mp3","res://Assets/Sfx/magna-fire.mp3","res://Assets/Sfx/vanessa-thread.mp3","res://Assets/Sfx/noelle-ice.mp3","res://Assets/Sfx/asta-slash.mp3"]
 const DEATH_SFX := {"goblin":"res://Assets/Sfx/death-goblin.mp3","orc":"res://Assets/Sfx/death-orc.mp3","uruk":"res://Assets/Sfx/death-uruk.mp3","warg":"res://Assets/Sfx/death-warg.mp3","troll":"res://Assets/Sfx/death-troll.mp3","nazgul":"res://Assets/Sfx/death-nazgul.mp3"}
+const DEATH_SFX_VARIANTS := {"troll":["res://Assets/Sfx/death-troll-2.mp3"],"nazgul":["res://Assets/Sfx/death-nazgul-2.mp3","res://Assets/Sfx/death-nazgul-3.mp3"],"warg":["res://Assets/Sfx/death-warg-2.mp3"]}
+const ATTACK_VOICES := 10
+const DEATH_VOICES := 6
 const ENEMY_KINDS := ["goblin","orc","uruk","warg","troll","nazgul","boss_troll"]
 const ENEMY_MODEL_SCALE := {"goblin":0.82,"orc":1.0,"uruk":1.02,"warg":1.04,"troll":1.50,"nazgul":1.08,"boss_troll":1.0}
 const ENEMY_MODEL_HEIGHT := {"goblin":2.46743,"orc":2.17860,"uruk":2.23451,"warg":1.463,"troll":2.30276,"nazgul":2.29422,"boss_troll":4.79922}
@@ -105,6 +110,11 @@ var ghost_range: MeshInstance3D
 var ghost_material: StandardMaterial3D
 var clock := 0.0
 var rng := RandomNumberGenerator.new()
+var presentation_rng := RandomNumberGenerator.new()
+var defeat_effects: Node3D
+var death_sound_times: Dictionary = {}
+var death_sound_variants: Dictionary = {}
+var last_death_sound := -100.0
 
 var camera: Camera3D
 var terrain_root: Node3D
@@ -187,7 +197,7 @@ var made_by_label: Label
 var force_high_detail := false
 
 func _ready() -> void:
-	benchmark_mode = OS.get_cmdline_user_args().has("--render-benchmark")
+	benchmark_mode = OS.get_cmdline_user_args().has("--render-benchmark") or OS.get_cmdline_user_args().has("--defeat-benchmark")
 	force_high_detail = OS.get_cmdline_user_args().has("--force-high-detail")
 	DisplayServer.window_set_title("Коди TD · Рубеж Средиземья")
 	DisplayServer.window_set_min_size(Vector2i(1000,600))
@@ -196,6 +206,10 @@ func _ready() -> void:
 		DisplayServer.window_set_icon(icon.get_image())
 	_load_settings()
 	rng.randomize()
+	presentation_rng.randomize()
+	defeat_effects = EnemyDefeatEffects.new()
+	defeat_effects.name = "EnemyDefeatEffects"
+	add_child(defeat_effects)
 	_load_route_patterns()
 	_build_scene()
 	_build_hud()
@@ -220,6 +234,10 @@ func _ready() -> void:
 	_refresh_selection()
 	if OS.get_cmdline_user_args().has("--render-benchmark"):
 		var benchmark := RenderBenchmark.new()
+		add_child(benchmark)
+		benchmark.start(self)
+	elif OS.get_cmdline_user_args().has("--defeat-benchmark"):
+		var benchmark := DefeatBenchmark.new()
 		add_child(benchmark)
 		benchmark.start(self)
 
@@ -1829,15 +1847,28 @@ func _advance_music() -> void:
 	music_player.stream = null
 
 func _build_sfx() -> void:
+	var bus := AudioServer.get_bus_index("SFX")
+	if bus < 0:
+		AudioServer.add_bus()
+		bus = AudioServer.bus_count-1
+		AudioServer.set_bus_name(bus,"SFX")
+		var limiter := AudioEffectLimiter.new()
+		limiter.ceiling_db = -1.0
+		limiter.threshold_db = -1.0
+		AudioServer.add_bus_effect(bus,limiter)
 	for path in ATTACK_SFX:
 		if ResourceLoader.exists(path):
 			sfx_stream_cache[path] = load(path)
 	for path in DEATH_SFX.values():
 		if ResourceLoader.exists(path):
 			sfx_stream_cache[path] = load(path)
-	for i in range(16):
+	for variants in DEATH_SFX_VARIANTS.values():
+		for path in variants:
+			if ResourceLoader.exists(path): sfx_stream_cache[path] = load(path)
+	for i in range(ATTACK_VOICES+DEATH_VOICES):
 		var voice := AudioStreamPlayer3D.new()
 		voice.name = "SFXVoice%d" % i
+		voice.bus = "SFX"
 		voice.max_distance = 110.0
 		voice.unit_size = 20.0
 		voice.volume_db = _volume_to_db(sfx_volume)
@@ -1845,19 +1876,44 @@ func _build_sfx() -> void:
 		sfx_players.append(voice)
 
 func _play_sfx(path: String, world_position: Vector3) -> void:
+	_try_play_sfx(path,world_position,false)
+
+func _try_play_sfx(path: String, world_position: Vector3, death_voice: bool = false) -> bool:
 	if sfx_volume <= 0.0 or sfx_players.is_empty():
-		return
+		return false
 	var stream := sfx_stream_cache.get(path) as AudioStream
 	if stream == null:
-		return
-	var voice := sfx_players[sfx_voice_cursor]
-	sfx_voice_cursor = (sfx_voice_cursor+1)%sfx_players.size()
-	voice.stop()
+		return false
+	var first := ATTACK_VOICES if death_voice else 0
+	var count := DEATH_VOICES if death_voice else ATTACK_VOICES
+	var voice: AudioStreamPlayer3D
+	for offset in range(count):
+		var index := first+(sfx_voice_cursor+offset)%count
+		if index < sfx_players.size() and not sfx_players[index].playing:
+			voice = sfx_players[index]
+			sfx_voice_cursor = (sfx_voice_cursor+offset+1)%count
+			break
+	# Let existing voices finish rather than hard-cutting a waveform whenever
+	# an impact arrives. Cosmetic saturation never changes combat or rewards.
+	if voice == null: return false
 	voice.stream = stream
 	voice.global_position = world_position
-	voice.pitch_scale = rng.randf_range(0.96,1.04)
+	voice.pitch_scale = presentation_rng.randf_range(0.985,1.015) if death_voice else presentation_rng.randf_range(0.96,1.04)
 	voice.volume_db = _volume_to_db(sfx_volume)
 	voice.play()
+	return true
+
+func _play_enemy_death_sound(kind: String, position: Vector3) -> void:
+	var key := "troll" if kind == "boss_troll" else kind
+	var now := float(Time.get_ticks_msec())/1000.0
+	if now-last_death_sound < 0.055 or now-float(death_sound_times.get(key,-100.0)) < 0.12: return
+	var choices: Array = [DEATH_SFX.get(key,DEATH_SFX.troll)]
+	choices.append_array(DEATH_SFX_VARIANTS.get(key,[]))
+	var index := int(death_sound_variants.get(key,0))%choices.size()
+	if _try_play_sfx(str(choices[index]),position,true):
+		death_sound_variants[key] = index+1
+		death_sound_times[key] = now
+		last_death_sound = now
 
 func _volume_to_db(value: float) -> float:
 	if value <= 0.0:
@@ -2692,17 +2748,19 @@ func _play_enemy_animation(enemy: Dictionary, clip: String) -> void:
 	enemy.animation = clip
 
 func _update_death_visuals(dt: float) -> void:
-	for death in enemy_death_visuals.duplicate():
-		death.time_left -= dt
-		if death.time_left <= 0.0:
-			death.node.queue_free()
-			enemy_death_visuals.erase(death)
+	for index in range(enemy_death_visuals.size()-1,-1,-1):
+		var death: Dictionary = enemy_death_visuals[index]
+		defeat_effects.advance(death,dt)
+		if float(death.time_left) <= 0.0: _release_enemy_death_visual(index)
+
+func _release_enemy_death_visual(index: int) -> void:
+	var death: Dictionary = enemy_death_visuals[index]
+	defeat_effects.release(death)
+	if is_instance_valid(death.node): death.node.queue_free()
+	enemy_death_visuals.remove_at(index)
 
 func _clear_enemy_death_visuals() -> void:
-	for death in enemy_death_visuals:
-		if is_instance_valid(death.node):
-			death.node.queue_free()
-	enemy_death_visuals.clear()
+	for index in range(enemy_death_visuals.size()-1,-1,-1): _release_enemy_death_visual(index)
 
 func _mat(color: Color) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
@@ -2715,7 +2773,7 @@ func _update_enemy(enemy: Dictionary, dt: float) -> void:
 		return
 	var burn_time := minf(dt,maxf(0.0,float(enemy.get("burn_until",0.0))-(clock-dt)))
 	if burn_time > 0.0:
-		_damage_enemy(enemy,float(enemy.get("burn_dps",0.0))*burn_time,0.0,false)
+		_damage_enemy(enemy,float(enemy.get("burn_dps",0.0))*burn_time,0.0,false,enemy.get("burn_cause",{"kind":2}))
 		if not enemies.has(enemy):
 			return
 	if enemy.hit_time > 0.0:
@@ -2871,6 +2929,7 @@ func _update_bolts(dt: float) -> void:
 		bolt.life += dt
 		if direction.length() <= step+0.3:
 			var impact_type: int = bolt.type
+			bolt.impact_direction = direction.normalized() if direction.length_squared() > 0.0001 else bolt.get("impact_direction",Vector3.FORWARD)
 			bolt.node.position = target_point
 			magic_effects.impact(impact_type,target_point)
 			var splash_center: Vector3 = target.node.position
@@ -2915,7 +2974,7 @@ func _release_bolt(bolt: Dictionary) -> void:
 func _effective_enemy_armor(enemy: Dictionary) -> float:
 	return maxf(0.0,float(enemy.get("armor",0.0))-(float(enemy.get("armor_shred",0.0)) if clock < float(enemy.get("shred_until",0.0)) else 0.0))
 
-func _damage_enemy(enemy: Dictionary, raw_damage: float, armor_ignore: float = 0.0, react: bool = true) -> float:
+func _damage_enemy(enemy: Dictionary, raw_damage: float, armor_ignore: float = 0.0, react: bool = true, cause: Dictionary = {}) -> float:
 	if not enemies.has(enemy) or float(enemy.hp) <= 0.0:
 		return 0.0
 	var damage := maxf(0.0,raw_damage)*CombatBalance.armor_multiplier(_effective_enemy_armor(enemy),armor_ignore)
@@ -2923,6 +2982,7 @@ func _damage_enemy(enemy: Dictionary, raw_damage: float, armor_ignore: float = 0
 	enemy.hp = maxf(0.0,float(enemy.hp)-damage)
 	_update_enemy_health_bar(enemy)
 	if enemy.hp <= 0.0:
+		enemy.death_cause = cause.duplicate()
 		_kill_enemy(enemy)
 	elif react:
 		enemy.hit_time = 0.18
@@ -2935,7 +2995,8 @@ func _hit_with_bolt(bolt: Dictionary, enemy: Dictionary, multiplier: float) -> v
 	if bool(bolt.get("shred",false)):
 		enemy.armor_shred = 14.0
 		enemy.shred_until = clock+3.0
-	_damage_enemy(enemy,float(bolt.damage)*multiplier,float(bolt.get("armor_ignore",0.0)))
+	var cause := {"kind":int(bolt.type),"direction":bolt.get("impact_direction",Vector3.ZERO),"freeze":bool(bolt.get("freeze",false))}
+	_damage_enemy(enemy,float(bolt.damage)*multiplier,float(bolt.get("armor_ignore",0.0)),true,cause)
 	if not enemies.has(enemy):
 		return
 	if int(bolt.type) == 4:
@@ -2950,20 +3011,23 @@ func _hit_with_bolt(bolt: Dictionary, enemy: Dictionary, multiplier: float) -> v
 			enemy.slow_until = maxf(float(enemy.slow_until),clock+duration)
 	if bool(bolt.get("burn",false)):
 		# Refresh the strongest burn instead of stacking unbounded DOTs.
-		enemy.burn_dps = maxf(float(enemy.get("burn_dps",0.0)) if clock < float(enemy.get("burn_until",0.0)) else 0.0,float(bolt.damage)*multiplier*0.10)
+		var previous_dps := float(enemy.get("burn_dps",0.0)) if clock < float(enemy.get("burn_until",0.0)) else 0.0
+		var incoming_dps := float(bolt.damage)*multiplier*0.10
+		if incoming_dps >= previous_dps: enemy.burn_cause = cause.duplicate()
+		enemy.burn_dps = maxf(previous_dps,incoming_dps)
 		enemy.burn_until = clock+3.0
 
 func _kill_enemy(enemy: Dictionary) -> void:
 	if not enemies.has(enemy):
 		return
+	var cause: Dictionary = enemy.get("death_cause",{})
 	if is_instance_valid(enemy.get("bar")):
 		enemy.bar.visible = false
 	if not selected_enemy.is_empty() and selected_enemy.get("node") == enemy.node:
 		_clear_enemy_selection()
 		_refresh_selection()
 	gold += int(enemy.reward)
-	var death_sound: String = DEATH_SFX.get(enemy.kind,DEATH_SFX.troll)
-	if not death_sound.is_empty(): _play_sfx(death_sound,enemy.node.global_position)
+	_play_enemy_death_sound(str(enemy.kind),enemy.node.global_position)
 	enemies.erase(enemy)
 	var animator: AnimationPlayer = enemy.get("animator") as AnimationPlayer
 	var death_length := 0.65
@@ -2974,8 +3038,17 @@ func _kill_enemy(enemy: Dictionary) -> void:
 			animation.loop_mode = Animation.LOOP_NONE
 			death_length = maxf(0.35,animation.length)
 			animator.speed_scale = game_speed
-			animator.play(death_clip)
-	enemy_death_visuals.append({"node":enemy.node,"lod":enemy.get("lod",{}),"animator":animator,"time_left":death_length})
+			animator.play(death_clip,0.14)
+	if enemy_death_visuals.size() >= EnemyDefeatEffects.MAX_CORPSES: _release_enemy_death_visual(0)
+	if not is_instance_valid(defeat_effects):
+		defeat_effects = EnemyDefeatEffects.new()
+		add_child(defeat_effects)
+	var death_cause := cause.duplicate()
+	death_cause.boss = bool(enemy.get("boss",false))
+	var death: Dictionary = defeat_effects.begin(enemy.node,enemy.get("model") as Node3D,float(enemy.get("height",2.0)),death_cause,death_length)
+	death.lod = enemy.get("lod",{})
+	death.animator = animator
+	enemy_death_visuals.append(death)
 	_refresh_hud()
 	status_label.text = "Враг повержен · +%d золота." % enemy.reward
 

@@ -55,8 +55,8 @@ func _run() -> void:
 		if Manifest._forbidden(path):
 			_fail("QA/studio content leaked into runtime roots")
 			return
-	if selected_sfx != 11:
-		_fail("attack/death SFX set no longer contains the current eleven cues")
+	if selected_sfx != 15:
+		_fail("attack/death SFX set no longer contains the current fifteen cues")
 		return
-	print("EXPORT_MANIFEST_SMOKE_OK: explicit preset, 37 GLB + 37 LOD, six biome profiles/nine PBR maps, eleven SFX, bundled music, raw routes/attributions, runtime helpers; no QA roots")
+	print("EXPORT_MANIFEST_SMOKE_OK: explicit preset, 37 GLB + 37 LOD, six biome profiles/nine PBR maps, fifteen SFX, bundled music, raw routes/attributions, runtime helpers; no QA roots")
 	quit(0)

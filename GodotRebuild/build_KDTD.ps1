@@ -162,6 +162,7 @@ foreach ($temporaryFile in @($StageOutput,$PublishTemp)) {
     Invoke-GodotCheck 'UI and campaign economy' @('--headless','--path',$Project,'--script','res://tests/ui_economy_smoke.gd') 'check-ui-economy.log'
     Invoke-GodotCheck 'Tower and enemy inspection layouts' @('--headless','--path',$Project,'--script','res://tests/inspection_layout_smoke.gd') 'check-inspection-layout.log'
     Invoke-GodotCheck 'Combat rules and enemy inspection' @('--headless','--path',$Project,'--script','res://tests/combat_rules_smoke.gd') 'check-combat-rules.log'
+    Invoke-GodotCheck 'Elemental death and bounded audio/visual resources' @('--headless','--audio-driver','Dummy','--path',$Project,'--script','res://tests/enemy_defeat_smoke.gd') 'check-enemy-defeat.log'
     Invoke-GodotCheck 'Frame pacing and settings' @('--headless','--path',$Project,'--script','res://tests/frame_pacing_smoke.gd') 'check-frame-pacing.log'
     Invoke-GodotCheck 'Bundled music loading' @('--headless','--path',$Project,'--script','res://tests/bundled_music_smoke.gd') 'check-bundled-music.log'
 
@@ -199,6 +200,7 @@ foreach ($temporaryFile in @($StageOutput,$PublishTemp)) {
     Invoke-GodotCheck 'Packed placement and battle UI' @('--headless','--path',$PackageInspector,'--main-pack',$StageOutput,'--script',(Join-Path $Project 'tests\placement_combat_smoke.gd')) 'check-packed-placement.log'
     Invoke-GodotCheck 'Packed Charmy and enemy inspection' @('--headless','--path',$PackageInspector,'--main-pack',$StageOutput,'--script',(Join-Path $Project 'tests\packaged_charmy_inspection_smoke.gd')) 'check-packed-charmy.log'
     Invoke-GodotCheck 'Packed animated spell origins' @('--headless','--path',$PackageInspector,'--main-pack',$StageOutput,'--script',(Join-Path $Project 'tests\spell_origin_smoke.gd')) 'check-packed-spell-origins.log'
+    Invoke-GodotCheck 'Packed elemental death and bounded audio/visual resources' @('--headless','--audio-driver','Dummy','--path',$PackageInspector,'--main-pack',$StageOutput,'--script',(Join-Path $Project 'tests\enemy_defeat_smoke.gd')) 'check-packed-enemy-defeat.log'
 
     if ($Output -eq $PermanentOutput) {
         $runningBuild = Get-Process -Name 'KDTD' -ErrorAction SilentlyContinue | Where-Object { $_.Path -and ([System.IO.Path]::GetFullPath($_.Path) -ieq $Output) }

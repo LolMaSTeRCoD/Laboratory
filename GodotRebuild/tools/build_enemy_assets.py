@@ -14,6 +14,7 @@ from enemy_mesh_core import Mesh,RAW,UVS,FACES,GROUPS,BODY_SET,RIG,VERT_WEIGHTS,
 from pack_character_materials import pack_character_materials
 from enemy_face_details import mouth_rim, stable_lock, fitted_scalp
 from audit_packed_model_sources import ensure_packed_model_images
+from enemy_death_motion import pose_death, ground_death, DEATH_LAST_FRAME, DEATH_REVISION
 
 ROOT=Path(__file__).resolve().parents[1];OUT=Path(os.environ.get('CADY_ENEMY_OUT',str(ROOT/'Assets'/'Enemies')))
 SOURCE=ROOT.parent/'Source'/'HeroPipeline'/'MakeHuman'
@@ -727,11 +728,11 @@ def _foot_trajectory(phase,base_y,ankle_height,travel=RUN_FOOT_TRAVEL,contact=RU
  if phase<contact:return base_y-travel*.5+travel*phase/contact,ankle_height
  swing=(phase-contact)/(1-contact);smooth=swing*swing*(3-2*swing);return base_y+travel*.5-travel*smooth,ankle_height+lift*math.sin(math.pi*swing)
 
-def animate(arm,kind):
+def animate(arm,kind,mesh):
  data=arm.animation_data_create();bones=arm.pose.bones
  gait_scale=float(arm.get('gait_scale',1.0))
  for b in bones:b.rotation_mode='XYZ'
- for clip,last,step in [('Idle',49,3),('Run',21,1),('Hit',13,1),('Death',34,1)]:
+ for clip,last,step in [('Idle',49,3),('Run',21,1),('Hit',13,1),('Death',DEATH_LAST_FRAME,1)]:
   frames=list(range(1,last+1,step));action=bpy.data.actions.new('enemy_'+kind+'_'+clip);data.action=action
   for track in data.nla_tracks:track.mute=True
   for frame in frames:
@@ -762,12 +763,15 @@ def animate(arm,kind):
    elif clip=='Hit':
     bones['chest'].rotation_euler[0]=.40*pulse;bones['head'].rotation_euler[0]=-.25*pulse;bones['spine'].rotation_euler[2]=.18*pulse;_move_world(bones['hips'],(0,.045*pulse,-.035*pulse))
    else:
-    fall=min(1,t/.78);fall=fall*fall*(3-2*fall);bones['root'].rotation_euler[0]=math.radians(87*fall);_move_world(bones['root'],(0,0,.15*fall));bones['spine'].rotation_euler[2]=.20*fall;bones['head'].rotation_euler[0]=-.18*fall;bones['cape'].rotation_euler[0]=.30*fall
+    pose_death(arm,kind,t,_move_world,_solve_limb,bpy.context.view_layer.update)
+    ground_death(arm,mesh,_move_world,bpy.context.view_layer.update,padding=.012 if kind in ['troll','boss_troll'] else .004)
    for b in bones:b.keyframe_insert('rotation_euler',frame=frame,group=b.name);b.keyframe_insert('location',frame=frame,group=b.name)
+   if clip=='Death' and kind=='nazgul':bones['cape'].keyframe_insert('scale',frame=frame,group='cape')
   data.action=None;track=data.nla_tracks.new();track.name=clip;track.strips.new(clip,1,action);track.mute=True
- for b in bones:b.rotation_euler=(0,0,0);b.location=(0,0,0)
+ for b in bones:b.rotation_euler=(0,0,0);b.location=(0,0,0);b.scale=(1,1,1)
  travel=.66 if kind=='warg' else RUN_FOOT_TRAVEL*gait_scale;contact=.42 if kind=='warg' else RUN_CONTACT
  arm['run_cycle_seconds']=RUN_CYCLE_SECONDS;arm['run_stride_m']=travel/contact;arm['run_reference_mps']=travel/contact/RUN_CYCLE_SECONDS
+ arm['death_motion_revision']=DEATH_REVISION
  bpy.context.scene.frame_set(1)
 
 def preview(kind,arm):
@@ -790,7 +794,7 @@ def preview(kind,arm):
    scene.render.filepath=str(folder/(kind+'_'+view+'.png'));bpy.ops.render.render(write_still=True)
 
 def build(kind):
- clean();obj,arm=warg() if kind=='warg' else humanoid(kind);animate(arm,kind)
+ clean();obj,arm=warg() if kind=='warg' else humanoid(kind);animate(arm,kind,obj)
  obj['enemy_pipeline']='anatomical-v3';obj['source_reference']=str(ROOT.parent/'Assets'/'Enemies'/(('troll' if kind=='boss_troll' else kind)+'.png'));obj['kind']=kind
  obj['surface_revision']='species-sculpt-surface-lips-stable-hair-20261111';obj['boss']=kind=='boss_troll'
  OUT.mkdir(parents=True,exist_ok=True);EDITABLE.mkdir(parents=True,exist_ok=True)

@@ -1,4 +1,8 @@
-Локальные MP3-звуки — загрузки-превью с Freesound. Указанные лицензии относятся к исходным записям.
+Локальные MP3-звуки — превью записей Freesound. Лицензии указаны для исходных записей.
+Звуки поражения подготовлены для KDTD: выбраны короткие фразы, убраны задержки,
+подавлен низкочастотный гул, выровнены уровни, добавлены плавные края и затухание.
+Собачьи фразы немного замедлены. Это изменения KDTD, а не работа авторов записей.
+Шумовые или синтетические голоса не добавлялись.
 
 Звуки магии и башен
 - «Sword slash energy wave», greyfeather, Freesound #724716, CC0: https://freesound.org/people/greyfeather/sounds/724716/
@@ -8,13 +12,15 @@
 - «iceSpell.wav», Relenzo2, Freesound #160420, CC0: https://freesound.org/people/Relenzo2/sounds/160420/
 
 Звуки поражения врагов
-- «Goblin Death», spookymodem, Freesound #249813, CC0: https://freesound.org/people/spookymodem/sounds/249813/
-- «Orc Grunt 3», qubodup, Freesound #738439, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738439/
-- «Orc Grunt 2», qubodup, Freesound #738438, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738438/
-- «30-wolfGrowling.wav», cazadordoblekatana, Freesound #429123, CC0: https://freesound.org/people/cazadordoblekatana/sounds/429123/
-- «SRSFX_LargeBeast_LongGrunts», StephenSaldanha, Freesound #186673, CC BY 4.0: https://freesound.org/people/StephenSaldanha/sounds/186673/
-- «Moaning Wraith.wav», gateroadmusic, Freesound #400855, CC0: https://freesound.org/people/gateroadmusic/sounds/400855/
+- death-goblin.mp3: «Goblin Death.wav», spookymodem, Freesound #249813, CC0: https://freesound.org/people/spookymodem/sounds/249813/
+- death-orc.mp3: «Orc Grunt 3», qubodup, Freesound #738439, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738439/
+- death-uruk.mp3: «Orc Grunt 2», qubodup, Freesound #738438, CC BY 4.0: https://freesound.org/people/qubodup/sounds/738438/
+- death-warg.mp3, death-warg-2.mp3: «Dog's Yelping 6», unfa, Freesound #160477, CC0: https://freesound.org/people/unfa/sounds/160477/
+- death-troll.mp3, death-troll-2.mp3: «SRSFX_LargeBeast_LongGrunts.wav», StephenSaldanha, Freesound #186673, CC BY 4.0: https://freesound.org/people/StephenSaldanha/sounds/186673/
+- death-nazgul.mp3, death-nazgul-2.mp3, death-nazgul-3.mp3: «Moaning Wraith.wav», gateroadmusic, Freesound #400855, CC0: https://freesound.org/people/gateroadmusic/sounds/400855/
 
 Атрибуция записей CC BY 4.0:
 - qubodup — «Orc Grunt 3» и «Orc Grunt 2», Freesound, лицензия Creative Commons Attribution 4.0.
 - StephenSaldanha — «SRSFX_LargeBeast_LongGrunts», Freesound, лицензия Creative Commons Attribution 4.0.
+Лицензия CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/

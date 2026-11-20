@@ -1,0 +1,519 @@
+{
+  "schema_version": 1,
+  "release": "0.6.4",
+  "verified_date": "2026-11-20",
+  "scope": "Articulated seven-species Death clips, cause-specific visual effects, mastered death voices, bounded resource handling and reviewed local cleanup.",
+  "artifacts": {
+    "executable": {
+      "name": "KDTD.exe",
+      "file_version": "0.6.4.0",
+      "bytes": 408360320,
+      "sha256": "1E390BFFF28CAD99E63F0F47CE8F91F4AA4364E9E746EA076DC89130B992F5EC"
+    },
+    "archive": {
+      "path": "GodotRebuild/Builds/Release/KDTD-Windows.zip",
+      "bytes": 331157770,
+      "sha256": "B2A0BBE6963AD4FBE1AB9054CFC64F22AC29465C48DF526115FE7CB256D93696",
+      "contents": [
+        "KDTD.exe",
+        "README.txt"
+      ],
+      "embedded_executable_hash_verified": true
+    }
+  },
+  "build": {
+    "status": "passed",
+    "engine": "Godot 4.7.2",
+    "model_tool": "Blender 5.2.3",
+    "command": "pwsh -File ./GodotRebuild/build_KDTD.ps1 -ReuseModels",
+    "errors_or_leak_warnings": 0,
+    "runtime_models": 37,
+    "compact_lods": 37,
+    "source_death_checks": 378,
+    "isolated_embedded_package_death_checks": 378,
+    "combat_rule_checks": 7673,
+    "packaged_resources_and_startup": "passed",
+    "packed_death_harness_note": "External test script loads production scripts/imported audio from EXE PCK. MP3 distinctness hashes loaded AudioStreamMP3.data, not unexported raw files."
+  },
+  "enemy_motion": {
+    "status": "passed",
+    "models": 7,
+    "exported_pose_samples": 595,
+    "death_duration_seconds": 1.4,
+    "ragdoll": false,
+    "packed_editables": 7,
+    "geometry_materials_skin_rest_and_idle_run_hit_unchanged": true,
+    "heroes_glbs_unchanged": 30,
+    "hero_editables_unchanged": 6,
+    "checks_by_kind": {
+      "goblin": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_goblin_Hit": true,
+          "enemy_goblin_Idle": true,
+          "enemy_goblin_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "orc": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_orc_Hit": true,
+          "enemy_orc_Idle": true,
+          "enemy_orc_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "uruk": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_uruk_Hit": true,
+          "enemy_uruk_Idle": true,
+          "enemy_uruk_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "troll": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_troll_Hit": true,
+          "enemy_troll_Idle": true,
+          "enemy_troll_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "death_scale_starts_one": true,
+        "death_scale_only_cloth": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "nazgul": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_nazgul_Hit": true,
+          "enemy_nazgul_Idle": true,
+          "enemy_nazgul_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "death_scale_starts_one": true,
+        "death_scale_only_cloth": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "warg": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_warg_Hit": true,
+          "enemy_warg_Idle": true,
+          "enemy_warg_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      },
+      "boss_troll": {
+        "rest_nodes": true,
+        "skin_joints": true,
+        "inverse_bind": true,
+        "mesh": true,
+        "materials": true,
+        "images": true,
+        "unaffected_clips": {
+          "enemy_boss_troll_Hit": true,
+          "enemy_boss_troll_Idle": true,
+          "enemy_boss_troll_Run": true
+        },
+        "death_changed": true,
+        "valid_skin": true,
+        "required_clips": true,
+        "death_scale_starts_one": true,
+        "death_scale_only_cloth": true,
+        "head_drops": true,
+        "root_does_not_pitch": true,
+        "ground_clearance": true
+      }
+    }
+  },
+  "death_mechanics": {
+    "styles": [
+      "antimagic",
+      "wind",
+      "fire",
+      "threads",
+      "water",
+      "ice",
+      "cotton",
+      "neutral"
+    ],
+    "direct_chain_splash_and_strongest_burn_attribution": "passed",
+    "once_only_reward_and_immediate_target_removal": "passed",
+    "pause_speed_reset_and_wave_completion": "passed",
+    "capacity_stress_and_cleanup": "passed",
+    "max_corpses": 48,
+    "max_bursts": 24,
+    "particles_per_burst": 24,
+    "max_free_bursts": 8,
+    "shared_materials": true,
+    "final_native_counts": {
+      "corpses": 0,
+      "effects": {
+        "active_bursts": 0,
+        "material_cache": 7,
+        "max_bursts": 24,
+        "max_corpses": 48,
+        "pooled_bursts": 8
+      }
+    }
+  },
+  "audio": {
+    "status": "objective_checks_passed",
+    "death_clips": 10,
+    "bytes": 242016,
+    "previous_six_clip_bytes": 1074289,
+    "reduction_percent": 77.47,
+    "duration_seconds": [
+      0.68,
+      2.5
+    ],
+    "onset_ms": [
+      0,
+      30
+    ],
+    "max_4x_oversampled_peak_dbfs": -2.908,
+    "active_rms_dbfs": [
+      -19.385,
+      -17.66
+    ],
+    "reproduction_byte_identical": true,
+    "subjective_listening": false,
+    "reserved_death_voices": 6,
+    "attack_voices": 10,
+    "non_stealing": true,
+    "sfx_limiter_db": -1,
+    "independent_music_control": true,
+    "rights": "CC0 / CC BY 4.0; per-source credits retained in Assets/Sfx/ATTRIBUTIONS.txt and Source/AudioPipeline/SOURCES.md"
+  },
+  "campaign": {
+    "newly_run": true,
+    "passed": true,
+    "report": "docs/qa/0.6.4-campaign.json",
+    "totals": {
+      "campaign_won": true,
+      "arenas": 18,
+      "waves": 270,
+      "transitions": 17,
+      "spawned": 5940,
+      "killed": 5935,
+      "escaped": 5,
+      "final_bosses_spawned": 18,
+      "final_bosses_killed": 18,
+      "final_gold": 1094
+    },
+    "economy": {
+      "actual_final_gold": 1094,
+      "discarded_on_transitions": 17967,
+      "earned_gold": 138141,
+      "expected_final_gold": 1094,
+      "sales_used": false,
+      "spent_gold": 123040,
+      "supplied_base_gold": 3960
+    },
+    "method": "Production headless simulation; not manual GUI campaign; fresh 0.6.4 run."
+  },
+  "native_renderer": {
+    "gpu": "AMD Radeon RX 6700 XT",
+    "renderer": "Forward+",
+    "resolution": {
+      "height": 1377,
+      "width": 2448
+    },
+    "image_resolution": {
+      "height": 1377,
+      "width": 2448
+    },
+    "cap_fps": 60,
+    "vsync": true,
+    "frames_per_view": 300,
+    "ordinary_18_towers_100_live_enemies": {
+      "forest_far": {
+        "fps_mean": 60.0001920006145,
+        "frame_ms": {
+          "max": 21.663,
+          "mean": 16.6666133333333,
+          "p50": 16.558,
+          "p95": 19.398
+        },
+        "render_gpu_ms": {
+          "max": 15.1359996795654,
+          "mean": 11.2317199961344,
+          "p50": 11.2600002288818,
+          "p95": 12.6770000457764
+        },
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "camera_size": 49.8461538461538,
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        }
+      },
+      "forest_near": {
+        "fps_mean": 59.9383234651543,
+        "frame_ms": {
+          "max": 22.895,
+          "mean": 16.6838166666667,
+          "p50": 16.696,
+          "p95": 20.475
+        },
+        "render_gpu_ms": {
+          "max": 20.2199993133545,
+          "mean": 10.7232533280055,
+          "p50": 10.5830001831055,
+          "p95": 13.5190000534058
+        },
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "camera_size": 14.0,
+        "character_lod": {
+          "active_mesh_vertices": 6438860,
+          "compact": 0,
+          "high": 118,
+          "missing": 0,
+          "source_vertices": 6438860
+        }
+      },
+      "jungle_far": {
+        "fps_mean": 60.0100816937245,
+        "frame_ms": {
+          "max": 16.879,
+          "mean": 16.6638666666667,
+          "p50": 16.666,
+          "p95": 16.803
+        },
+        "render_gpu_ms": {
+          "max": 15.0019998550415,
+          "mean": 10.9518566703796,
+          "p50": 10.9860000610352,
+          "p95": 12.5380001068115
+        },
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "camera_size": 52.9615384615385,
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        }
+      },
+      "winter_far": {
+        "fps_mean": 60.0100816937245,
+        "frame_ms": {
+          "max": 16.934,
+          "mean": 16.6638666666667,
+          "p50": 16.666,
+          "p95": 16.783
+        },
+        "render_gpu_ms": {
+          "max": 15.3900003433228,
+          "mean": 10.9114233430227,
+          "p50": 10.8889999389648,
+          "p95": 12.5129995346069
+        },
+        "population": {
+          "enemies": 100,
+          "towers": 18
+        },
+        "camera_size": 56.0769230769231,
+        "character_lod": {
+          "active_mesh_vertices": 3004829,
+          "compact": 102,
+          "high": 16,
+          "missing": 0,
+          "source_vertices": 6438860
+        }
+      }
+    },
+    "additional_48_corpses_24_bursts": {
+      "far": {
+        "fps_mean": 50.4706641787994,
+        "frame_ms": {
+          "max": 29.754,
+          "mean": 19.81349,
+          "p50": 19.061,
+          "p95": 25.405
+        },
+        "gpu_ms": {
+          "max": 25.5049991607666,
+          "mean": 12.9920999844869,
+          "p50": 12.4069995880127,
+          "p95": 18.0410003662109
+        },
+        "step_cpu_ms": {
+          "max": 11.851,
+          "mean": 7.13532666666667,
+          "p50": 6.619,
+          "p95": 9.579
+        },
+        "frames": 300,
+        "corpses": 48,
+        "live_enemies": 100,
+        "towers": 18,
+        "effects": {
+          "active_bursts": 24,
+          "material_cache": 7,
+          "max_bursts": 24,
+          "max_corpses": 48,
+          "pooled_bursts": 0
+        },
+        "camera_size": 49.8461538461538
+      },
+      "near": {
+        "fps_mean": 50.021826190161,
+        "frame_ms": {
+          "max": 61.395,
+          "mean": 19.9912733333333,
+          "p50": 18.852,
+          "p95": 26.763
+        },
+        "gpu_ms": {
+          "max": 28.8239994049072,
+          "mean": 12.8495300165812,
+          "p50": 11.8889999389648,
+          "p95": 18.6749992370605
+        },
+        "step_cpu_ms": {
+          "max": 14.299,
+          "mean": 7.23759,
+          "p50": 6.714,
+          "p95": 9.821
+        },
+        "frames": 300,
+        "corpses": 48,
+        "live_enemies": 100,
+        "towers": 18,
+        "effects": {
+          "active_bursts": 24,
+          "material_cache": 7,
+          "max_bursts": 24,
+          "max_corpses": 48,
+          "pooled_bursts": 0
+        },
+        "camera_size": 16.0
+      }
+    },
+    "method": "Native standalone renderer: forest,18 towers,100 live enemies with production combat ticks plus48 slow-motion corpses/24 instanced bursts. Geometry LOD with full animation sampling; monotonic wall-frame samples and GPU timestamps; screenshots excluded. Synthetic sustained death stress, not campaign throughput.",
+    "all_processes_auto_exited": true,
+    "engine_or_shader_errors": 0,
+    "visual_review": "Final embedded-EXE showcase at0.95/1.55s and near battle stress inspected; seven exported species pose renders reviewed separately.",
+    "limitations": [
+      "One GPU and short opt-in runs, not hardware utilization or an uncapped FPS claim.",
+      "Synthetic death stress retains full animation sampling and slows corpse lifetime; roughly50FPS, not60.",
+      "Earlier concurrent-load ordinary/death profiles were21-27/16-20FPS; old0.6.3 control was24-27FPS. Later unchanged0.6.4 passed60/50FPS. Background-load influence is inferred; no unrelated user app was changed.",
+      "Windows UI activation helper failed; successful foreground focus is not claimed. Native visible-window rendering and changing GPU timestamps are measured."
+    ]
+  },
+  "cleanup": {
+    "status": "completed",
+    "files_removed": 192,
+    "bytes_removed": 189089368,
+    "canonical_pairs_hash_verified": 7,
+    "post_cleanup_standalone_startup": {
+      "exit_code": 0,
+      "errors": 0,
+      "auto_exited": true,
+      "passed": true,
+      "method": "Standalone embedded EXE startup after removal of duplicate workshop files; headless Dummy audio; not a GPU profile"
+    },
+    "preserved": [
+      "canonical resources",
+      "packed editable sources",
+      "review PNG/log/JSON",
+      "Git/LFS",
+      "Tools",
+      "Archive recovery",
+      "useful Godot import cache",
+      "Music",
+      "G:/Cady"
+    ],
+    "report": "GodotRebuild/Builds/cleanup-064-local-caches.json"
+  },
+  "remaining": [
+    "Canonical hero likeness and broader environment artwork remain separate unfinished work.",
+    "Death is authored skeletal animation, shader breakup and fragments, not physical ragdoll or mesh fracture.",
+    "Subjective voice quality requires human audition."
+  ],
+  "local_evidence": [
+    "GodotRebuild/Builds/release-064-build.log",
+    "GodotRebuild/Builds/quality-release-064-final-qa",
+    "GodotRebuild/Builds/quality-defeat-064-focused-qa",
+    "GodotRebuild/Builds/quality-063-control-20261120",
+    "GodotRebuild/Builds/death-20261119/promotion.json",
+    "GodotRebuild/Builds/death-20261119/enemy-final/review/audit.json",
+    "GodotRebuild/Builds/death-20261119/audio/prepared-metrics.json",
+    "GodotRebuild/Builds/death-20261119/packed-defeat-qa/result.json"
+  ]
+}

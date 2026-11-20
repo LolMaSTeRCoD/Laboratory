@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "release": "0.6.4",
+  "verified_utc": "2026-11-19T21:23:27.5710322Z",
+  "passed": true,
+  "newly_run": true,
+  "carried_forward_from": null,
+  "started_utc": "2026-11-19T21:19:18",
+  "finished_utc": "2026-11-19T21:22:13.2318022Z",
+  "elapsed_seconds": 175.66,
+  "engine": "Godot 4.7.2",
+  "command": "Tools/Godot/Godot_v4.7.2-stable_win64_console.exe --headless --path GodotRebuild --script res://tests/campaign_balance_probe.gd -- --connected-dual-aura",
+  "strategy": "capstone_dual_aura",
+  "method": "Actual new production game.gd combat, economy and campaign-state simulation at 30 Hz, using real routes and scenery obstacles, legal placements, paid upgrades, finite gold and real transitions. Models, sound, HUD redraws and spell artwork omitted by the existing harness.",
+  "source_sha256": {
+    "GodotRebuild/scripts/game.gd": {
+      "sha256": "1894cf4b9bae2751ab59e17cb7d2c0e4f52a28c1f80f12f0147ed9c167871164",
+      "unchanged_during_run": true
+    },
+    "GodotRebuild/scripts/combat_balance.gd": {
+      "sha256": "203eb95d19bc453127a8b984fd6fc0b20d62308097a669c476c9ca123ff7d768",
+      "unchanged_during_run": true
+    },
+    "GodotRebuild/Assets/Maps/routes.json": {
+      "sha256": "c3ef071f6914c2893a86372fbda91a097500483ad169183a05fb7dff30d3d612",
+      "unchanged_during_run": true
+    },
+    "GodotRebuild/tests/campaign_balance_probe.gd": {
+      "sha256": "118d3ee612f2088b5e450f4d9fd457b9aa9d00008b793bc281ac828a3c62d751",
+      "unchanged_during_run": true
+    }
+  },
+  "checks": {
+    "exit_zero": true,
+    "actual_version_0_6_4": true,
+    "source_hashes_match_before_and_after": true,
+    "campaign_won": true,
+    "arenas_18": true,
+    "waves_270": true,
+    "transitions_17": true,
+    "final_bosses_spawned_18": true,
+    "final_bosses_killed_18": true,
+    "npc_accounting_balanced": true,
+    "economy_balanced": true,
+    "separate_wave_start_after_transition": true,
+    "final_wave_clear": true,
+    "engine_logs_clean": true,
+    "battle_economy_and_transition_outcomes_match_0_6_1": true,
+    "historical_fixed_output_restored": true
+  },
+  "totals": {
+    "campaign_won": true,
+    "arenas": 18,
+    "waves": 270,
+    "transitions": 17,
+    "spawned": 5940,
+    "killed": 5935,
+    "escaped": 5,
+    "final_bosses_spawned": 18,
+    "final_bosses_killed": 18,
+    "final_gold": 1094
+  },
+  "global_economy": {
+    "actual_final_gold": 1094,
+    "discarded_on_transitions": 17967,
+    "earned_gold": 138141,
+    "expected_final_gold": 1094,
+    "sales_used": false,
+    "spent_gold": 123040,
+    "supplied_base_gold": 3960
+  },
+  "regression_comparison": {
+    "baseline_release": "0.6.1",
+    "baseline_full_campaign": "GodotRebuild/Builds/acceptance-061/campaign-connected-dual-aura.json",
+    "arena_outcome_rows_compared": 18,
+    "wave_outcome_rows_compared": 270,
+    "transition_rows_compared": 17,
+    "mismatch_count": 0,
+    "mismatches": []
+  },
+  "evidence": {
+    "local_full_campaign": "GodotRebuild/Builds/death-20261119/campaign/campaign-connected-dual-aura.json",
+    "local_full_campaign_sha256": "b24fc95fb5dcc480c8f0c29496d46681bb018b5ebdf09570d629c16e4a33385e",
+    "local_console_log": "GodotRebuild/Builds/death-20261119/campaign/console.log",
+    "local_engine_log": "GodotRebuild/Builds/death-20261119/campaign/engine.log",
+    "local_status": "GodotRebuild/Builds/death-20261119/campaign/run-status.json",
+    "large_local_evidence_is_git_ignored": true
+  },
+  "limitations": [
+    "New headless gameplay/economy acceptance only; not a manual GUI campaign playthrough.",
+    "Imported character models, GPU rendering, death animation appearance, elemental artwork, voice audibility/quality and artistic likeness are outside this run.",
+    "Fresh build/export, focused death-effect/audio and visible-render validation are separate evidence."
+  ]
+}

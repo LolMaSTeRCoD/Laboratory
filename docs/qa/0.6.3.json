@@ -352,7 +352,7 @@
       "GodotRebuild/Builds/check-hero-glb-contracts.json",
       "GodotRebuild/Builds/check-hero-import-textures.log",
       "docs/qa/0.6.3-gameplay-reuse.json",
-      "GodotRebuild/Builds/Release/KDTD-Windows.zip.json",
+      "GodotRebuild/Builds/quality-release-063-visible-qa/package-063.json",
       "GodotRebuild/Builds/cleanup-063-local-caches.json",
       "GodotRebuild/Builds/check-063-after-cache-cleanup.log"
     ]
